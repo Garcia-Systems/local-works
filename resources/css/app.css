@@ -1,0 +1,17 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --color-local-green: #276749;
+    --color-local-green-dark: #1d4d38;
+    --color-warm-surface: #f7f4ed;
+    --color-charcoal: #252a27;
+}
+
+@layer base {
+    :focus-visible { outline: 3px solid var(--color-local-green); outline-offset: 3px; }
+}
