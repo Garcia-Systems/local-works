@@ -25,7 +25,8 @@ class AuditRequestController extends Controller
         } catch (Throwable $exception) {
             Log::error('Audit request notification could not be sent.', [
                 'audit_request_id' => $auditRequest->getKey(),
-                'exception' => $exception,
+                'route' => $request->route()->getName(),
+                'exception_class' => $exception::class,
             ]);
         }
 
