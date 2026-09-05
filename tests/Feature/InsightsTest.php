@@ -24,7 +24,7 @@ class InsightsTest extends TestCase
             ->assertSee('<h2>Understand the work first</h2>', false)
             ->assertSee('<ol>', false)
             ->assertSee('data-analytics-view="insight-article"', false)
-            ->assertSee('data-analytics-action="insight-audit-cta"', false)
+            ->assertSee('data-analytics-location="insight_article"', false)
             ->assertSee('href="'.route('digital-friction-audit').'"', false);
     }
 

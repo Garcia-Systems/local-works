@@ -29,7 +29,7 @@
                 <p class="eyebrow mb-3">A practical next step</p>
                 <h2 id="article-cta-title" class="text-3xl">Have a workflow like this?</h2>
                 <p class="body-copy mt-4">Describe how it works today. Local Works will start with the workflow, the evidence, and whether changing it is worthwhile—not with a predetermined technology.</p>
-                <div class="mt-7 flex flex-col gap-3 sm:flex-row"><a class="button button-primary" href="{{ route('digital-friction-audit') }}" data-analytics-action="insight-audit-cta">Request a Digital Friction Audit</a><a class="button button-secondary" href="{{ route('how-it-works') }}">See How It Works</a></div>
+                <div class="mt-7 flex flex-col gap-3 sm:flex-row"><a class="button button-primary" href="{{ route('digital-friction-audit') }}" data-analytics-event="audit_cta_click" data-analytics-location="insight_article">Request a Digital Friction Audit</a><a class="button button-secondary" href="{{ route('how-it-works') }}">See How It Works</a></div>
             </div></div>
         </aside>
     </article>

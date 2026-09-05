@@ -7,13 +7,13 @@
     <div data-page="contact">
         <x-page-introduction eyebrow="Contact" title="Start a conversation.">
             If you have a workflow problem to investigate, the Digital Friction Audit is usually the best place to start. For general questions or other inquiries, send Local Works a message here.
-            <x-slot:actions><a class="button button-primary" href="{{ route('digital-friction-audit') }}" data-cta-location="contact-hero" data-analytics-action="contact-audit-cta">Request a Digital Friction Audit</a></x-slot:actions>
+            <x-slot:actions><a class="button button-primary" href="{{ route('digital-friction-audit') }}" data-analytics-event="audit_cta_click" data-analytics-location="contact_hero">Request a Digital Friction Audit</a></x-slot:actions>
         </x-page-introduction>
 
         <section class="section-space bg-warm-100" aria-labelledby="path-title">
             <div class="site-container"><div class="max-w-3xl"><p class="eyebrow mb-4">Choose a starting point</p><h2 id="path-title" class="section-heading">Which path should I use?</h2></div>
                 <div class="contact-paths mt-10">
-                    <article><p class="eyebrow">For a specific workflow</p><h3>Digital Friction Audit</h3><p>Use this when customers or staff are struggling with a workflow, you want a process investigated, or you are unsure whether configuration, integration, automation, custom work, or no change is appropriate.</p><a class="button button-primary mt-6" href="{{ route('digital-friction-audit') }}" data-cta-location="contact-path" data-analytics-action="contact-audit-cta">Request an Audit</a></article>
+                    <article><p class="eyebrow">For a specific workflow</p><h3>Digital Friction Audit</h3><p>Use this when customers or staff are struggling with a workflow, you want a process investigated, or you are unsure whether configuration, integration, automation, custom work, or no change is appropriate.</p><a class="button button-primary mt-6" href="{{ route('digital-friction-audit') }}" data-analytics-event="audit_cta_click" data-analytics-location="contact_audit_path">Request an Audit</a></article>
                     <article><p class="eyebrow">For everything else</p><h3>General Contact</h3><p>Use this for general questions, referrals, business inquiries, potential collaboration, implementation-related conversation, or anything that does not fit the audit request.</p><a class="button button-secondary mt-6" href="#general-contact">Send a General Message</a></article>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                     @if ($errors->any())
                         <div id="contact-form-errors" class="form-error-summary" role="alert" tabindex="-1" data-validation-errors><strong>Please review the highlighted fields.</strong><span>Your message has not been submitted yet.</span></div>
                     @endif
-                    <form class="audit-form mt-8" action="{{ route('contact-requests.store') }}" method="POST" aria-describedby="contact-privacy-note{{ $errors->any() ? ' contact-form-errors' : '' }}" data-contact-form data-analytics-form="general-contact" data-analytics-start="general_contact_form_start" data-analytics-submit="general_contact_submit">
+                    <form class="audit-form mt-8" action="{{ route('contact-requests.store') }}" method="POST" aria-describedby="contact-privacy-note{{ $errors->any() ? ' contact-form-errors' : '' }}" data-contact-form data-analytics-form="general-contact">
                         @csrf
                         <div class="honeypot" aria-hidden="true"><label for="contact_company_fax">Leave this field empty</label><input id="contact_company_fax" name="company_fax" type="text" tabindex="-1" autocomplete="off"></div>
                         <fieldset><legend>Your details</legend><p class="form-group-help"><span aria-hidden="true">*</span> indicates a required field.</p><div class="form-grid mt-6">

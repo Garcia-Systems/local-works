@@ -77,6 +77,8 @@ Alternatively, after cloning, `composer run setup` performs dependency installat
 
 Set `LOCAL_WORKS_INTAKE_EMAIL` to the monitored address that should receive Digital Friction Audit and general-contact notifications, and configure Laravel's standard `MAIL_*` settings for the production mail transport. The request is committed to the database before mail is attempted. A mail transport failure is logged with only the request ID and does not discard the request or show the visitor a false failure.
 
+Optional, privacy-conscious funnel measurement uses a single configurable Plausible Analytics integration and is disabled by default. See [`docs/ANALYTICS.md`](docs/ANALYTICS.md) for production configuration, events, the analytics-versus-persisted-attribution distinction, and the small owner-facing UTM playbook.
+
 ## Quality checks
 
 ```bash

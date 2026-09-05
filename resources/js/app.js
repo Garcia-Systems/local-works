@@ -1,4 +1,5 @@
 import './bootstrap';
+import './analytics';
 
 const toggle = document.querySelector('[data-menu-toggle]');
 const menu = document.querySelector('[data-mobile-menu]');
