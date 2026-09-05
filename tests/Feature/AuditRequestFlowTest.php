@@ -35,8 +35,7 @@ class AuditRequestFlowTest extends TestCase
             'friction_description' => 'Customers must call to make routine changes.',
             'status' => AuditRequest::STATUS_NEW,
         ]);
-        Mail::assertSent(NewAuditRequestNotification::class, fn ($mail): bool =>
-            $mail->hasTo('intake@local.test') && $mail->auditRequest->business_name === 'Example Workshop'
+        Mail::assertSent(NewAuditRequestNotification::class, fn ($mail): bool => $mail->hasTo('intake@local.test') && $mail->auditRequest->business_name === 'Example Workshop'
         );
 
         $this->followRedirects($response)

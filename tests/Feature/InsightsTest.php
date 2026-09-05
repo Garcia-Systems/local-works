@@ -75,6 +75,7 @@ class InsightsTest extends TestCase
             collect(glob($directory.'/*') ?: [])->each(fn ($file) => unlink($file));
             rmdir($directory);
         });
+
         return $directory;
     }
 

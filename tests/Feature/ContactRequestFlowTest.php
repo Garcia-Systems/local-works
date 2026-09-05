@@ -34,8 +34,7 @@ class ContactRequestFlowTest extends TestCase
             'message' => 'I have a general question about Local Works.',
             'status' => ContactRequest::STATUS_NEW,
         ]);
-        Mail::assertSent(NewContactRequestNotification::class, fn ($mail): bool =>
-            $mail->hasTo('intake@local.test') && $mail->contactRequest->email === 'avery@example.com'
+        Mail::assertSent(NewContactRequestNotification::class, fn ($mail): bool => $mail->hasTo('intake@local.test') && $mail->contactRequest->email === 'avery@example.com'
         );
         $this->followRedirects($response)->assertOk()
             ->assertSee('Your message has been received.')
