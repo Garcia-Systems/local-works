@@ -137,6 +137,66 @@
     .scenario-walkthrough li { @apply border-b border-warm-200 py-6 last:border-b-0 md:border-b-0 md:px-5 md:first:pl-0 md:last:pr-0; }
     .scenario-walkthrough h3 { @apply text-lg; }
     .scenario-walkthrough p { @apply mt-3 text-sm leading-6 text-muted; }
+
+    .friction-signals { @apply grid border-y border-warm-200 sm:grid-cols-2; }
+    .friction-signals li { @apply flex min-h-16 items-center border-b border-warm-200 py-4 pl-7 pr-4 leading-6 before:-ml-7 before:mr-4 before:size-2 before:shrink-0 before:rounded-full before:bg-local-500 sm:odd:pr-7 sm:even:border-l sm:even:pl-10; }
+    .friction-signals li:nth-last-child(-n+2) { @apply sm:border-b-0; }
+    .friction-signals li:last-child { @apply border-b-0; }
+
+    .journey-map { @apply grid gap-px overflow-hidden rounded-2xl border border-warm-200 bg-warm-200 sm:grid-cols-2 lg:grid-cols-4; }
+    .journey-map li { @apply flex min-h-52 gap-4 bg-warm-50 p-6; }
+    .journey-map li > span { @apply text-xs font-bold text-local-600; }
+    .journey-map h3 { @apply text-xl; }
+    .journey-map p { @apply mt-3 text-sm leading-6 text-muted; }
+
+    .two-column-list { @apply grid gap-x-8 border-t border-local-200 sm:grid-cols-2; }
+    .two-column-list li { @apply flex border-b border-local-200 py-4 leading-6 before:mr-3 before:mt-2 before:size-1.5 before:shrink-0 before:rounded-full before:bg-local-600; }
+
+    .audit-example { @apply rounded-2xl border border-white/20 bg-white/5 p-6 sm:p-8; }
+    .audit-example h3 { @apply mt-3 text-2xl; }
+    .audit-example dl { @apply mt-7 grid gap-6 sm:grid-cols-2; }
+    .audit-example dt, .audit-example h4 { @apply font-bold text-local-200; }
+    .audit-example dd { @apply mt-2 leading-7 text-local-100; }
+    .audit-example li { @apply flex before:mr-3 before:mt-2.5 before:size-1.5 before:shrink-0 before:rounded-full before:bg-local-200; }
+
+    .signal-groups { @apply grid border-t border-warm-200 md:grid-cols-2; }
+    .signal-groups article { @apply border-b border-warm-200 py-7 md:odd:pr-10 md:even:border-l md:even:pl-10; }
+    .signal-groups h3 { @apply text-xl; }
+    .signal-groups ul { @apply mt-4 grid gap-2 text-sm leading-6 text-muted; }
+    .signal-groups li { @apply flex before:mr-3 before:mt-2.5 before:size-1.5 before:shrink-0 before:rounded-full before:bg-local-500; }
+    .plain-check-list { @apply grid gap-4; }
+    .plain-check-list li { @apply flex text-lg leading-7 before:mr-4 before:mt-1 before:text-local-700 before:content-['—']; }
+    .tag-list { @apply flex flex-wrap content-start gap-3; }
+    .tag-list li { @apply rounded-full border border-local-200 bg-white px-4 py-2.5 text-sm font-semibold; }
+    .example-list { @apply border-t border-warm-200; }
+    .example-list article { @apply grid gap-2 border-b border-warm-200 py-6 sm:grid-cols-[minmax(10rem,.4fr)_1fr] sm:gap-8; }
+    .example-list h3 { @apply text-lg; }
+    .example-list p { @apply leading-7 text-muted; }
+
+    .audit-intake { @apply border-y border-local-200 bg-local-50; }
+    .audit-form-surface { @apply rounded-2xl border border-warm-200 bg-white p-5 shadow-[0_18px_55px_rgba(32,38,34,0.08)] sm:p-8; }
+    .form-notice { @apply grid gap-1 rounded-xl border border-local-200 bg-local-50 p-4 text-sm leading-6; }
+    .form-notice strong { @apply text-local-800; }
+    .form-notice span { @apply text-muted; }
+    .audit-form { @apply grid gap-10; }
+    .audit-form fieldset { @apply min-w-0 border-0 border-t border-warm-200 p-0 pt-7; }
+    .audit-form legend { @apply px-0 pr-4 text-2xl font-semibold tracking-[-0.025em]; }
+    .form-group-help { @apply mt-2 text-sm leading-6 text-muted; }
+    .form-grid { @apply grid gap-6 sm:grid-cols-2; }
+    .field { @apply min-w-0; }
+    .field label { @apply mb-2 flex min-h-6 items-baseline justify-between gap-3 text-sm font-bold text-ink; }
+    .field-status { @apply text-xs font-medium text-muted; }
+    .field input, .field textarea { @apply block w-full rounded-lg border border-stone-400 bg-white px-4 py-3 text-base leading-6 text-ink shadow-sm transition-colors hover:border-local-600 focus:border-local-600 focus:outline-none focus:ring-2 focus:ring-local-200; }
+    .field input { @apply min-h-12; }
+    .field textarea { @apply min-h-32 resize-y; }
+    .field > p { @apply mt-2 text-sm leading-5 text-muted; }
+    .privacy-note { @apply border-l-4 border-local-500 bg-local-50 px-4 py-3 text-sm leading-6 text-muted; }
+    .privacy-note a { @apply font-semibold text-local-700 underline decoration-2; }
+    .next-steps { @apply border-t border-local-200; counter-reset: steps; }
+    .next-steps li { @apply relative border-b border-local-200 py-6 pl-11; counter-increment: steps; }
+    .next-steps li::before { content: counter(steps); @apply absolute left-0 top-6 grid size-7 place-items-center rounded-full bg-local-100 text-xs font-bold text-local-800; }
+    .next-steps h3 { @apply text-lg; }
+    .next-steps p { @apply mt-2 text-sm leading-6 text-muted; }
 }
 
 @media (min-width: 64rem) {
