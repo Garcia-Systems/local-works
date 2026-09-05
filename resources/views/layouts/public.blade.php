@@ -34,7 +34,7 @@
                 </ul>
             </nav>
 
-            <a class="button button-primary hidden lg:inline-flex" href="{{ route('digital-friction-audit') }}">Request an Audit</a>
+            <a class="button button-primary hidden lg:inline-flex" href="{{ route('digital-friction-audit') }}" data-cta-location="header">Request an Audit</a>
             <button class="flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-warm-200 bg-white text-ink lg:hidden" type="button" aria-expanded="false" aria-controls="mobile-navigation" data-menu-toggle>
                 <span class="sr-only" data-menu-label>Open menu</span>
                 <svg class="size-6" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path data-menu-open d="M4 7h16M4 12h16M4 17h16"/><path class="hidden" data-menu-close d="M6 6l12 12M18 6L6 18"/></svg>
@@ -54,7 +54,7 @@
                         <li><a class="flex min-h-12 items-center py-2 font-semibold text-ink" href="{{ route($routeName) }}" @if(request()->routeIs($routeName)) aria-current="page" @endif>{{ $label }} @if(request()->routeIs($routeName))<span class="ml-auto text-xs font-bold uppercase tracking-wider text-local-700">Current</span>@endif</a></li>
                     @endforeach
                 </ul>
-                <a class="button button-primary mt-4 w-full" href="{{ route('digital-friction-audit') }}">Request an Audit</a>
+                <a class="button button-primary mt-4 w-full" href="{{ route('digital-friction-audit') }}" data-cta-location="header-mobile">Request an Audit</a>
             </div>
         </nav>
     </header>

@@ -55,6 +55,57 @@
     .surface-card { @apply rounded-2xl border border-warm-200 bg-white p-6 shadow-[0_12px_35px_rgba(32,38,34,0.05)] sm:p-8; }
     .media-frame { @apply aspect-[4/3] overflow-hidden rounded-2xl bg-local-100; }
     .media-frame > img { @apply h-full w-full object-cover; }
+
+    .workflow-map { @apply relative mx-auto w-full max-w-xl rounded-3xl border border-local-200 bg-local-50 p-5 shadow-[0_24px_70px_rgba(31,80,53,0.12)] sm:p-7; }
+    .workflow-map::before { content: ''; @apply absolute -right-12 -top-12 -z-10 size-56 rounded-full bg-warm-100; }
+    .workflow-map__header { @apply flex justify-between gap-4 border-b border-local-200 pb-4 text-xs font-bold uppercase tracking-widest text-local-700; }
+    .workflow-map__path { @apply grid items-center gap-3 py-8 text-center text-sm font-semibold sm:grid-cols-[1fr_auto_1fr_auto_1fr]; }
+    .workflow-map__path span { @apply rounded-xl border border-warm-200 bg-white px-3 py-4 shadow-sm; }
+    .workflow-map__path i { @apply mx-auto h-5 w-px bg-local-500 sm:h-px sm:w-5; }
+    .workflow-map__friction { @apply flex items-center gap-4 rounded-xl bg-white p-4; }
+    .workflow-map__friction strong, .workflow-map__friction small { @apply block; }
+    .workflow-map__friction small { @apply mt-1 leading-5 text-muted; }
+    .workflow-map__mark { @apply grid size-9 shrink-0 place-items-center rounded-full bg-warm-100 font-bold text-local-800; }
+
+    .scenario-list { @apply divide-y divide-warm-200 border-y border-warm-200; }
+    .scenario-list li { @apply relative py-5 pl-9 text-lg font-medium leading-8 before:absolute before:left-1 before:top-7 before:size-3 before:rounded-full before:border-4 before:border-local-200 before:bg-local-700; }
+    .principle-line { @apply flex flex-wrap gap-x-6 gap-y-3 border-t border-warm-200 pt-6 text-sm font-bold text-local-800; }
+    .principle-line span { @apply flex items-center gap-2 before:size-1.5 before:rounded-full before:bg-local-500; }
+
+    .method-steps { @apply grid border-y border-warm-200 md:grid-cols-5 md:divide-x md:divide-warm-200; }
+    .method-steps li { @apply grid grid-cols-[2.5rem_1fr] gap-3 border-b border-warm-200 py-6 last:border-b-0 md:block md:border-b-0 md:px-5 md:first:pl-0 md:last:pr-0; }
+    .method-steps__number { @apply text-sm font-bold text-local-600; }
+    .method-steps h3 { @apply text-lg; }
+    .method-steps p { @apply mt-2 text-sm leading-6 text-muted; }
+
+    .decision-grid { @apply grid gap-px overflow-hidden rounded-2xl border border-white/15 bg-white/15 sm:grid-cols-2 lg:grid-cols-5; }
+    .decision-grid li { @apply min-h-52 bg-local-800 p-6; }
+    .decision-grid li > span { @apply text-sm font-bold text-local-200; }
+    .decision-grid h3 { @apply mt-8 text-xl; }
+    .decision-grid p { @apply mt-3 text-sm leading-6 text-local-100; }
+    .decision-grid li:last-child { @apply bg-local-700; }
+
+    .problem-list { @apply border-t border-warm-200; }
+    .problem-list article { @apply grid gap-2 border-b border-warm-200 py-6 sm:grid-cols-[3rem_minmax(10rem,.6fr)_1fr] sm:items-baseline sm:gap-5; }
+    .problem-list article > span { @apply text-xs font-bold text-local-600; }
+    .problem-list h3 { @apply text-lg; }
+    .problem-list p { @apply leading-7 text-muted; }
+
+    .process-sequence { @apply grid gap-3 sm:grid-cols-2; }
+    .process-sequence li { @apply relative flex min-h-20 items-center gap-3 rounded-xl border border-warm-200 bg-white p-4; }
+    .process-sequence li > span:first-child { @apply grid size-7 shrink-0 place-items-center rounded-full bg-local-100 text-xs font-bold text-local-800; }
+    .process-sequence li > span:nth-child(2) { @apply font-semibold leading-snug; }
+    .process-sequence__arrow { @apply absolute -bottom-3 left-7 z-10 text-local-500; }
+    .audit-discipline { @apply rounded-2xl border border-local-200 bg-white p-6; }
+    .audit-discipline > p:last-child { @apply mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 font-semibold leading-7; }
+    .audit-discipline span { @apply text-local-500; }
+    .evidence-path { @apply grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-3 rounded-2xl border border-warm-200 bg-warm-50 p-6 text-lg font-semibold sm:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] sm:text-center; }
+    .evidence-path i { @apply rotate-90 not-italic text-local-500 sm:rotate-0; }
+    .evidence-path strong { @apply text-local-700; }
+}
+
+@media (min-width: 64rem) {
+    .process-sequence { grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
