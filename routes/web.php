@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuditRequestController;
+use App\Http\Controllers\ContactRequestController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'pages.home')->name('home');
@@ -13,6 +14,14 @@ Route::view('/problems', 'pages.problems')->name('problems');
 Route::view('/about', 'pages.about')->name('about');
 Route::view('/insights', 'pages.insights')->name('insights');
 Route::view('/contact', 'pages.contact')->name('contact');
+Route::post('/contact', [ContactRequestController::class, 'store'])
+    ->middleware('throttle:5,10')
+    ->name('contact-requests.store');
+Route::get('/contact/thank-you', function () {
+    return session('contact_submitted')
+        ? view('pages.contact-thank-you')
+        : redirect()->route('contact');
+})->name('contact.thank-you');
 Route::view('/privacy', 'pages.privacy')->name('privacy');
 Route::get('/thank-you', function () {
     return session('audit_submitted')

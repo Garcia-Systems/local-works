@@ -146,6 +146,38 @@ class PublicSiteTest extends TestCase
             ->assertDontSee('Register');
     }
 
+    public function test_about_page_explains_identity_principles_and_truthful_evidence(): void
+    {
+        $this->get('/about')->assertOk()
+            ->assertSee('Better business systems start with better questions.')
+            ->assertSee('Garcia Systems is the parent, legal, and professional company')
+            ->assertSeeInOrder(['Configure', 'Integrate', 'Automate', 'Custom Build', 'Leave Alone'])
+            ->assertSee('Proof should come from real work.')
+            ->assertSee('data-analytics-action="about-audit-cta"', false)
+            ->assertSee('href="'.route('digital-friction-audit').'"', false)
+            ->assertDontSee('Trusted by')->assertDontSee('Log in')->assertDontSee('Register');
+    }
+
+    public function test_contact_page_renders_minimal_accessible_general_inquiry_form(): void
+    {
+        $response = $this->get('/contact')->assertOk()
+            ->assertSee('Start a conversation.')
+            ->assertSee('Which path should I use?')
+            ->assertSee('action="'.route('contact-requests.store').'" method="POST"', false)
+            ->assertSee('data-analytics-form="general-contact"', false)
+            ->assertSee('href="'.route('digital-friction-audit').'"', false);
+
+        foreach (['name', 'email', 'phone', 'business_name', 'message'] as $field) {
+            $response->assertSee('name="'.$field.'"', false);
+        }
+
+        $response->assertSee('autocomplete="name" required aria-required="true"', false)
+            ->assertSee('type="email"', false)->assertSee('type="tel"', false)
+            ->assertSee('name="message" rows="7" required aria-required="true"', false)
+            ->assertSee('name="_token"', false)->assertSee('href="'.route('privacy').'"', false)
+            ->assertDontSee('budget')->assertDontSee('Log in')->assertDontSee('Register');
+    }
+
     #[DataProvider('publicRoutes')]
     public function test_public_marketing_routes_are_successful_without_authentication(string $uri, string $heading): void
     {
@@ -166,7 +198,7 @@ class PublicSiteTest extends TestCase
             'how it works' => ['/how-it-works', 'Start with how the work actually gets done.'],
             'audit' => ['/digital-friction-audit', 'Find what is harder than it needs to be.'],
             'problems' => ['/problems', 'Where is the work getting harder than it needs to be?'],
-            'about' => ['/about', 'Practical business improvement, locally grounded.'],
+            'about' => ['/about', 'Better business systems start with better questions.'],
             'insights' => ['/insights', 'Notes on simpler business operations.'],
             'contact' => ['/contact', 'Start a conversation.'],
             'privacy' => ['/privacy', 'Privacy matters.'],
