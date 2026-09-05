@@ -48,6 +48,24 @@ class PublicSiteTest extends TestCase
             ->assertDontSee('name="email"', false);
     }
 
+    public function test_how_it_works_explains_the_complete_methodology_and_decisions(): void
+    {
+        $response = $this->get('/how-it-works');
+
+        $response
+            ->assertOk()
+            ->assertSee('<h1 id="page-title"', false)
+            ->assertSee('Start with how the work actually gets done.')
+            ->assertSeeInOrder(['1. Observe', '2. Understand', '3. Measure', '4. Choose', '5. Deliver'])
+            ->assertSeeInOrder(['Configure', 'Integrate', 'Automate', 'Custom Build', 'Leave Alone'])
+            ->assertSee('Observation is not proof.')
+            ->assertSee('Example scenario')
+            ->assertSee('hypothetical appointment request', false)
+            ->assertSee('href="'.route('digital-friction-audit').'"', false)
+            ->assertDontSee('Log in')
+            ->assertDontSee('Register');
+    }
+
     public function test_public_navigation_contains_expected_destinations_and_mobile_controls(): void
     {
         $response = $this->get('/problems');
@@ -80,7 +98,7 @@ class PublicSiteTest extends TestCase
     {
         return [
             'home' => ['/', 'Make your business easier to use.'],
-            'how it works' => ['/how-it-works', 'Start with the problem, not the software.'],
+            'how it works' => ['/how-it-works', 'Start with how the work actually gets done.'],
             'audit' => ['/digital-friction-audit', 'Find the friction worth fixing.'],
             'problems' => ['/problems', 'Everyday work should not be this hard.'],
             'about' => ['/about', 'Practical business improvement, locally grounded.'],
