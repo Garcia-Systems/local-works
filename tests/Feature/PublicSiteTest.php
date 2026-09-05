@@ -123,6 +123,29 @@ class PublicSiteTest extends TestCase
             ->assertSee('aria-current="page"', false);
     }
 
+    public function test_problems_page_presents_recognizable_friction_and_balanced_outcomes(): void
+    {
+        $response = $this->get('/problems');
+
+        $response
+            ->assertOk()
+            ->assertSee('Where is the work getting harder than it needs to be?')
+            ->assertSee('Customers have to ask for help with something routine.')
+            ->assertSee('Scheduling becomes a conversation instead of a transaction.')
+            ->assertSee('Customers enter information once. Staff enter it again.')
+            ->assertSee("The tools work. They just don't work together.")
+            ->assertSee("Customers don't know what happens next.")
+            ->assertSeeInOrder(['Configure', 'Integrate', 'Automate', 'Custom Build', 'Leave Alone'])
+            ->assertSee('A hypothetical membership workflow')
+            ->assertSee('not a customer case study')
+            ->assertSee('data-cta-location="problems-hero"', false)
+            ->assertSee('data-cta-location="problems-midpage"', false)
+            ->assertSee('data-cta-location="problems-final"', false)
+            ->assertSee('href="'.route('digital-friction-audit').'"', false)
+            ->assertDontSee('Log in')
+            ->assertDontSee('Register');
+    }
+
     #[DataProvider('publicRoutes')]
     public function test_public_marketing_routes_are_successful_without_authentication(string $uri, string $heading): void
     {
@@ -142,7 +165,7 @@ class PublicSiteTest extends TestCase
             'home' => ['/', 'Make your business easier to use.'],
             'how it works' => ['/how-it-works', 'Start with how the work actually gets done.'],
             'audit' => ['/digital-friction-audit', 'Find what is harder than it needs to be.'],
-            'problems' => ['/problems', 'Everyday work should not be this hard.'],
+            'problems' => ['/problems', 'Where is the work getting harder than it needs to be?'],
             'about' => ['/about', 'Practical business improvement, locally grounded.'],
             'insights' => ['/insights', 'Notes on simpler business operations.'],
             'contact' => ['/contact', 'Start a conversation.'],
