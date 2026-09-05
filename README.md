@@ -224,3 +224,11 @@ Identify and redeploy the last known-good commit through Laravel Cloud. **Code r
 ### Intentionally absent
 
 There is no admin dashboard, CRM, account or customer portal, queue/worker, upload store, custom backup service, or custom observability/alerting stack. Marketing and Insight content is deployed from Git. These omissions preserve the documented Version 1 scope.
+
+## Version 1 build status
+
+The final launch examination is complete, but Version 1 is **not yet declared build-complete** because this checkout does not contain `composer.lock`. A production lockfile must be generated with Composer against the reviewed dependency constraints, committed, and then used to complete the clean-install test. Do not deploy from an unlocked Composer dependency resolution.
+
+Once that reproducibility blocker is resolved and the documented checks pass, the website provides the public infrastructure needed to begin real-world validation. The next phase is to deploy, verify production configuration, perform a controlled smoke test, begin outreach, perform real Digital Friction Audits, hold discovery conversations, pursue the first proposal and customer, and observe operational friction before building more internal software.
+
+**Additional custom software should be justified by real operating evidence.**
