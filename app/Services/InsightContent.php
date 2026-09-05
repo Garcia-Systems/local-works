@@ -82,11 +82,20 @@ class InsightContent
             'type_label' => Str::headline($metadata['type']),
             'tags' => $metadata['tags'] ?? [],
             'draft' => $metadata['draft'] ?? false,
-            'html' => Str::markdown(trim($parts[2]), [
+            'html' => Str::markdown($this->removeDangerousHtml(trim($parts[2])), [
                 'html_input' => 'strip',
                 'allow_unsafe_links' => false,
             ]),
         ];
+    }
+
+    private function removeDangerousHtml(string $markdown): string
+    {
+        return preg_replace(
+            '/<\s*(script|style|iframe|object|embed)\b[^>]*>.*?<\s*\/\s*\1\s*>/is',
+            '',
+            $markdown,
+        ) ?? $markdown;
     }
 
     private function parseFrontMatter(string $source, string $file): array

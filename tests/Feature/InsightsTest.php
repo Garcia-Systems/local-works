@@ -37,7 +37,7 @@ class InsightsTest extends TestCase
     public function test_loader_discovers_extracts_sorts_and_sanitizes_content(): void
     {
         $directory = $this->temporaryDirectory();
-        $this->write($directory, 'older.md', $this->article('Older', 'older', '2026-01-01', '## Heading\n\n<script>alert(1)</script> **Useful** [unsafe](javascript:alert(1))'));
+        $this->write($directory, 'older.md', $this->article('Older', 'older', '2026-01-01', "## Heading\n\n<script>alert(1)</script>\n\n**Useful** [unsafe](javascript:alert(1))"));
         $this->write($directory, 'newer.md', $this->article('Newer', 'newer', '2026-01-02', 'Body'));
         $this->write($directory, 'draft.md', $this->article('Draft', 'draft', '2026-01-03', 'Body', "draft: true\n"));
 
@@ -48,6 +48,7 @@ class InsightsTest extends TestCase
         $this->assertStringContainsString('<h2>Heading</h2>', $articles->last()['html']);
         $this->assertStringContainsString('<strong>Useful</strong>', $articles->last()['html']);
         $this->assertStringNotContainsString('<script>', $articles->last()['html']);
+        $this->assertStringNotContainsString('alert(1)', $articles->last()['html']);
         $this->assertStringNotContainsString('href="javascript:', $articles->last()['html']);
         $this->assertSame('newer', (new InsightContent($directory))->findPublished('newer')['slug']);
     }

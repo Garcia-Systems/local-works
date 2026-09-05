@@ -51,7 +51,7 @@ class AuditRequestFlowTest extends TestCase
         $response = $this->from(route('digital-friction-audit'))
             ->post(route('audit-requests.store'), array_merge($this->validData(), [$field => $value]));
 
-        $response->assertRedirect(route('digital-friction-audit'))->assertSessionHasErrors($field);
+        $response->assertRedirect(route('digital-friction-audit').'#audit-intake')->assertSessionHasErrors($field);
         $this->assertDatabaseCount('audit_requests', 0);
         Mail::assertNothingSent();
     }
@@ -111,7 +111,7 @@ class AuditRequestFlowTest extends TestCase
             array_merge($this->validData(), ['company_fax' => 'bot content'])
         );
 
-        $response->assertRedirect(route('digital-friction-audit'))->assertSessionHasErrors('company_fax');
+        $response->assertRedirect(route('digital-friction-audit').'#audit-intake')->assertSessionHasErrors('company_fax');
         $this->assertDatabaseCount('audit_requests', 0);
         Mail::assertNothingSent();
     }

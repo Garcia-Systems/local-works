@@ -98,14 +98,15 @@ class PublicSiteTest extends TestCase
             ->assertSee('type="email"', false)
             ->assertSee('type="tel"', false)
             ->assertSee('action="'.route('audit-requests.store').'" method="POST"', false)
-            ->assertSee('name="name" type="text" autocomplete="name" required aria-required="true"', false)
-            ->assertSee('name="email" type="email" inputmode="email" autocomplete="email" required aria-required="true"', false)
-            ->assertSee('name="business_name" type="text" autocomplete="organization" required aria-required="true"', false)
-            ->assertSee('name="friction_description" rows="5" required aria-required="true"', false)
-            ->assertSee('name="current_process" rows="5" required aria-required="true"', false)
             ->assertSee('name="_token"', false)
             ->assertDontSee('type="submit" disabled', false)
             ->assertDontSee('request received', false);
+
+        $this->assertControlHasAttributes($response->getContent(), 'input', ['name' => 'name', 'type' => 'text', 'autocomplete' => 'name', 'required' => null, 'aria-required' => 'true']);
+        $this->assertControlHasAttributes($response->getContent(), 'input', ['name' => 'email', 'type' => 'email', 'inputmode' => 'email', 'autocomplete' => 'email', 'required' => null, 'aria-required' => 'true']);
+        $this->assertControlHasAttributes($response->getContent(), 'input', ['name' => 'business_name', 'type' => 'text', 'autocomplete' => 'organization', 'required' => null, 'aria-required' => 'true']);
+        $this->assertControlHasAttributes($response->getContent(), 'textarea', ['name' => 'friction_description', 'rows' => '5', 'required' => null, 'aria-required' => 'true']);
+        $this->assertControlHasAttributes($response->getContent(), 'textarea', ['name' => 'current_process', 'rows' => '5', 'required' => null, 'aria-required' => 'true']);
     }
 
     public function test_public_navigation_contains_expected_destinations_and_mobile_controls(): void
@@ -133,8 +134,8 @@ class PublicSiteTest extends TestCase
             ->assertSee('Customers have to ask for help with something routine.')
             ->assertSee('Scheduling becomes a conversation instead of a transaction.')
             ->assertSee('Customers enter information once. Staff enter it again.')
-            ->assertSee("The tools work. They just don't work together.")
-            ->assertSee("Customers don't know what happens next.")
+            ->assertSee("The tools work. They just don't work together.", false)
+            ->assertSee("Customers don't know what happens next.", false)
             ->assertSeeInOrder(['Configure', 'Integrate', 'Automate', 'Custom Build', 'Leave Alone'])
             ->assertSee('A hypothetical membership workflow')
             ->assertSee('not a customer case study')
@@ -203,5 +204,18 @@ class PublicSiteTest extends TestCase
             'contact' => ['/contact', 'Start a conversation.'],
             'privacy' => ['/privacy', 'Privacy matters.'],
         ];
+    }
+
+    private function assertControlHasAttributes(string $html, string $element, array $attributes): void
+    {
+        $lookaheads = collect($attributes)->map(function (?string $value, string $attribute): string {
+            $attribute = preg_quote($attribute, '/');
+
+            return $value === null
+                ? "(?=[^>]*\\s{$attribute}(?:\\s|=|>))"
+                : "(?=[^>]*\\s{$attribute}=\"".preg_quote($value, '/').'\")';
+        })->implode('');
+
+        $this->assertMatchesRegularExpression("/<{$element}\\b{$lookaheads}[^>]*>/i", $html);
     }
 }
