@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="@yield('meta_description', 'Local Works helps businesses identify frustrating customer and employee workflows and find the simplest practical way to improve them.')">
     <link rel="canonical" href="{{ url()->current() }}">
-    <meta property="og:type" content="website">
+    <meta property="og:type" content="@yield('og_type', 'website')">
     <meta property="og:site_name" content="Local Works by Garcia Systems">
     <meta property="og:title" content="@yield('title', 'Local Works') | by Garcia Systems">
     <meta property="og:description" content="@yield('meta_description', 'Make your business easier to use with practical workflow improvements.')">
@@ -29,7 +29,7 @@
                         'about' => 'About',
                         'insights' => 'Insights',
                     ] as $routeName => $label)
-                        <li><a class="nav-link" href="{{ route($routeName) }}" @if(request()->routeIs($routeName)) aria-current="page" @endif>{{ $label }}</a></li>
+                        <li><a class="nav-link" href="{{ route($routeName) }}" @if(request()->routeIs($routeName, $routeName.'.*')) aria-current="page" @endif>{{ $label }}</a></li>
                     @endforeach
                 </ul>
             </nav>
@@ -51,7 +51,7 @@
                         'about' => 'About',
                         'insights' => 'Insights',
                     ] as $routeName => $label)
-                        <li><a class="flex min-h-12 items-center py-2 font-semibold text-ink" href="{{ route($routeName) }}" @if(request()->routeIs($routeName)) aria-current="page" @endif>{{ $label }} @if(request()->routeIs($routeName))<span class="ml-auto text-xs font-bold uppercase tracking-wider text-local-700">Current</span>@endif</a></li>
+                        <li><a class="flex min-h-12 items-center py-2 font-semibold text-ink" href="{{ route($routeName) }}" @if(request()->routeIs($routeName, $routeName.'.*')) aria-current="page" @endif>{{ $label }} @if(request()->routeIs($routeName, $routeName.'.*'))<span class="ml-auto text-xs font-bold uppercase tracking-wider text-local-700">Current</span>@endif</a></li>
                     @endforeach
                 </ul>
                 <a class="button button-primary mt-4 w-full" href="{{ route('digital-friction-audit') }}" data-cta-location="header-mobile">Request an Audit</a>

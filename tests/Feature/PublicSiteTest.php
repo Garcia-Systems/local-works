@@ -199,7 +199,7 @@ class PublicSiteTest extends TestCase
             'audit' => ['/digital-friction-audit', 'Find what is harder than it needs to be.'],
             'problems' => ['/problems', 'Where is the work getting harder than it needs to be?'],
             'about' => ['/about', 'Better business systems start with better questions.'],
-            'insights' => ['/insights', 'Notes on simpler business operations.'],
+            'insights' => ['/insights', 'Practical notes on making business easier to use.'],
             'contact' => ['/contact', 'Start a conversation.'],
             'privacy' => ['/privacy', 'Privacy matters.'],
         ];

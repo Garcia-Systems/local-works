@@ -98,6 +98,7 @@ The feature suite boots the application and visits every public page as a guest,
 | `/problems` | Problems We Investigate |
 | `/about` | About |
 | `/insights` | Insights |
+| `/insights/{slug}` | A published, file-backed Insights article |
 | `/contact` | General Contact |
 | `/contact/thank-you` | Session-gated general-contact confirmation |
 | `/privacy` | Privacy |
@@ -116,6 +117,8 @@ General contact stores name, email, optional phone and business name, message, t
 **Audit requests are captured by the production website, but lead management remains outside the custom application until real operating evidence justifies additional tooling.**
 
 **General inbound messages are captured, but lead/customer management remains outside the custom application until real operating evidence justifies additional tooling.** Requests can be reviewed through existing operational tools or direct database access; there is intentionally no admin, CRM, account, or status-management interface.
+
+Insights articles are reviewed Markdown files in `resources/content/insights/`, not database records. The small loader excludes drafts and future-dated articles, validates required metadata, and renders Markdown with raw HTML and unsafe links disabled. See [`docs/INSIGHTS.md`](docs/INSIGHTS.md) for metadata, publishing, evidence-label, observation, and future case-study rules.
 
 The solution hierarchy is:
 

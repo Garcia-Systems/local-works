@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuditRequestController;
 use App\Http\Controllers\ContactRequestController;
+use App\Http\Controllers\InsightController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'pages.home')->name('home');
@@ -12,7 +13,8 @@ Route::post('/digital-friction-audit', [AuditRequestController::class, 'store'])
     ->name('audit-requests.store');
 Route::view('/problems', 'pages.problems')->name('problems');
 Route::view('/about', 'pages.about')->name('about');
-Route::view('/insights', 'pages.insights')->name('insights');
+Route::get('/insights', [InsightController::class, 'index'])->name('insights');
+Route::get('/insights/{slug}', [InsightController::class, 'show'])->name('insights.show');
 Route::view('/contact', 'pages.contact')->name('contact');
 Route::post('/contact', [ContactRequestController::class, 'store'])
     ->middleware('throttle:5,10')
