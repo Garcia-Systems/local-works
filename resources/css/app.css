@@ -102,6 +102,41 @@
     .evidence-path { @apply grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-3 rounded-2xl border border-warm-200 bg-warm-50 p-6 text-lg font-semibold sm:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] sm:text-center; }
     .evidence-path i { @apply rotate-90 not-italic text-local-500 sm:rotate-0; }
     .evidence-path strong { @apply text-local-700; }
+
+    .method-detail { @apply grid gap-9 lg:grid-cols-[.7fr_1.3fr] lg:gap-20; }
+    .method-detail__intro { @apply flex items-start gap-5; }
+    .method-detail__number { @apply mt-1 text-sm font-bold text-local-600; }
+    .method-question { @apply text-xl font-semibold leading-8 text-ink sm:text-2xl; }
+    .method-note { @apply border-l-4 border-local-500 bg-local-50 px-5 py-4 leading-7 text-muted; }
+
+    .example-flow { @apply overflow-hidden rounded-2xl border border-warm-200 bg-white; }
+    .example-flow figcaption { @apply border-b border-warm-200 px-5 py-4 text-sm leading-6 text-muted; }
+    .example-flow figcaption span { @apply mr-2 font-bold text-local-700; }
+    .example-flow ol { @apply grid gap-px bg-warm-200 sm:grid-cols-2 lg:grid-flow-col lg:auto-cols-fr; }
+    .example-flow li { @apply relative flex min-h-16 items-center bg-white px-5 py-4 text-sm font-semibold after:absolute after:-bottom-2 after:left-6 after:z-10 after:text-local-500 after:content-['↓'] sm:after:hidden lg:after:-right-2 lg:after:bottom-auto lg:after:left-auto lg:after:block lg:after:content-['→']; }
+    .example-flow li:last-child { @apply after:hidden; }
+
+    .evidence-sequence { @apply grid gap-px overflow-hidden rounded-2xl border border-white/15 bg-white/15 sm:grid-cols-2 lg:grid-cols-3; }
+    .evidence-sequence li { @apply min-h-48 bg-local-800 p-6; }
+    .evidence-sequence li > span { @apply text-xs font-bold text-local-200; }
+    .evidence-sequence h3 { @apply mt-6 text-xl; }
+    .evidence-sequence p { @apply mt-3 text-sm leading-6 text-local-100; }
+
+    .outcome-grid { @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-5; }
+    .outcome-grid article { @apply border-t-4 border-local-500 bg-white p-6 shadow-[0_10px_30px_rgba(32,38,34,0.06)]; }
+    .outcome-grid article > span { @apply text-xs font-bold text-local-600; }
+    .outcome-grid h3 { @apply mt-7 text-xl; }
+    .outcome-grid p { @apply mt-3 text-sm leading-6 text-muted; }
+
+    .evaluation-list { @apply border-t border-warm-200; }
+    .evaluation-list li { @apply grid grid-cols-[2rem_1fr] gap-3 border-b border-warm-200 py-4 text-lg font-semibold leading-7; }
+    .evaluation-list span { @apply text-sm font-bold text-local-600; }
+    .assumption-list { @apply grid gap-x-8 gap-y-4 sm:grid-cols-2; }
+    .assumption-list li { @apply flex gap-3 leading-7 text-stone-200 before:mt-2.5 before:size-1.5 before:shrink-0 before:rounded-full before:bg-local-200; }
+    .scenario-walkthrough { @apply grid border-y border-warm-200 md:grid-cols-5 md:divide-x md:divide-warm-200; }
+    .scenario-walkthrough li { @apply border-b border-warm-200 py-6 last:border-b-0 md:border-b-0 md:px-5 md:first:pl-0 md:last:pr-0; }
+    .scenario-walkthrough h3 { @apply text-lg; }
+    .scenario-walkthrough p { @apply mt-3 text-sm leading-6 text-muted; }
 }
 
 @media (min-width: 64rem) {
