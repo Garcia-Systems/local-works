@@ -39,7 +39,7 @@ class ContactRequestFlowTest extends TestCase
         );
         $this->followRedirects($response)->assertOk()
             ->assertSee('Your message has been received.')
-            ->assertSee('data-submission-event="general_contact_submit"', false);
+            ->assertSee('data-submission-event="contact_form_submit"', false);
     }
 
     #[DataProvider('requiredFields')]
@@ -109,6 +109,21 @@ class ContactRequestFlowTest extends TestCase
         $this->assertFalse(Route::has('contact-requests.index'));
         $this->assertFalse(Route::has('contact-requests.show'));
         $this->get('/contact-requests')->assertNotFound();
+    }
+
+    public function test_success_analytics_marker_is_server_confirmed_and_one_time(): void
+    {
+        $this->post(route('contact-requests.store'), $this->validData())->assertRedirect(route('contact.thank-you'));
+
+        $this->get(route('contact.thank-you'))
+            ->assertOk()
+            ->assertSee('data-analytics-success-event="contact_form_submit"', false);
+        $this->get(route('contact.thank-you'))->assertRedirect(route('contact'));
+
+        $this->followingRedirects()
+            ->from(route('contact'))
+            ->post(route('contact-requests.store'), array_merge($this->validData(), ['email' => 'invalid']))
+            ->assertDontSee('data-analytics-success-event="contact_form_submit"', false);
     }
 
     public function test_mail_failure_does_not_discard_the_message(): void

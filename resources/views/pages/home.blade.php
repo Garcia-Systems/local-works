@@ -11,7 +11,7 @@
                 <h1 id="home-title" class="display-heading">Make your business easier to use.</h1>
                 <p class="body-large mt-7 max-w-2xl">Local Works helps businesses find frustrating customer and staff workflows, then determine the simplest practical way to improve them.</p>
                 <div class="mt-9 flex flex-col gap-3 sm:flex-row">
-                    <a class="button button-primary" href="{{ route('digital-friction-audit') }}" data-cta-location="hero">Request a Digital Friction Audit</a>
+                    <a class="button button-primary" href="{{ route('digital-friction-audit') }}" data-analytics-event="audit_cta_click" data-analytics-location="home_hero">Request a Digital Friction Audit</a>
                     <a class="button button-secondary" href="{{ route('how-it-works') }}">See How It Works</a>
                 </div>
             </div>
@@ -133,7 +133,7 @@
                 <h2 id="audit-title" class="section-heading">Start with the workflow, not the software.</h2>
                 <p class="body-copy mt-5">An audit investigates the relevant parts of the customer journey and the staff work behind them. It looks for unnecessary calls, emails, printing, waiting, repeated information, manual transfers, disconnected systems, and avoidable visits.</p>
                 <p class="body-copy mt-4">An inconvenience is a clue, not proof. We ask questions and look for evidence before deciding whether action makes sense.</p>
-                <a class="button button-primary mt-8" href="{{ route('digital-friction-audit') }}" data-cta-location="audit-section">Request a Digital Friction Audit</a>
+                <a class="button button-primary mt-8" href="{{ route('digital-friction-audit') }}" data-analytics-event="audit_cta_click" data-analytics-location="home_audit_section">Request a Digital Friction Audit</a>
             </div>
             <div class="space-y-8">
                 <div><h3 class="text-lg font-semibold">The customer journey</h3><x-process-sequence class="mt-4" :items="['Find', 'Understand', 'Contact', 'Book / Join', 'Pay', 'Receive Service', 'Manage', 'Return']" label="Customer journey examined by the audit" /></div>
@@ -170,7 +170,7 @@
             <h2 id="final-cta-title" class="mx-auto max-w-4xl text-3xl leading-tight sm:text-4xl lg:text-5xl">What’s harder about doing business with you than it needs to be?</h2>
             <p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-stone-300">Tell us what frustrates your customers or staff. A Digital Friction Audit is a practical place to begin the conversation.</p>
             <div class="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <a class="button button-primary" href="{{ route('digital-friction-audit') }}" data-cta-location="final-cta">Request a Digital Friction Audit</a>
+                <a class="button button-primary" href="{{ route('digital-friction-audit') }}" data-analytics-event="audit_cta_click" data-analytics-location="home_final_cta">Request a Digital Friction Audit</a>
                 <a class="font-semibold text-local-200 underline decoration-local-500 decoration-2 underline-offset-4 hover:text-white" href="{{ route('contact') }}">Have a question? Contact Local Works</a>
             </div>
         </div>

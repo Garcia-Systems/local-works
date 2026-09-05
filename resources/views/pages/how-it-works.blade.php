@@ -7,7 +7,7 @@
     <x-page-introduction eyebrow="How it works" title="Start with how the work actually gets done.">
         Local Works begins with the current workflow, not a predetermined technology solution. We look at what customers and staff are trying to accomplish, where unnecessary friction appears, and whether changing the process is actually worth it.
         <x-slot:actions>
-            <a class="button button-primary" href="{{ route('digital-friction-audit') }}" data-cta-location="how-hero">Request a Digital Friction Audit</a>
+            <a class="button button-primary" href="{{ route('digital-friction-audit') }}" data-analytics-event="audit_cta_click" data-analytics-location="how_it_works_hero">Request a Digital Friction Audit</a>
             <a class="button button-secondary" href="{{ route('problems') }}">See Problems We Investigate</a>
         </x-slot:actions>
     </x-page-introduction>
@@ -166,13 +166,13 @@
 
     <section class="section-space border-y border-warm-200 bg-warm-100" aria-labelledby="audit-bridge-title">
         <div class="site-container grid gap-12 lg:grid-cols-[.85fr_1.15fr] lg:gap-20">
-            <div><p class="eyebrow mb-4">A structured starting point</p><h2 id="audit-bridge-title" class="section-heading">The Digital Friction Audit is where this process begins.</h2><p class="body-copy mt-5">The audit examines relevant parts of a customer or employee journey and identifies where deeper investigation may be worthwhile. It is not an automatic software recommendation engine.</p><a class="button button-primary mt-8" href="{{ route('digital-friction-audit') }}" data-cta-location="how-audit-bridge">Request a Digital Friction Audit</a></div>
+            <div><p class="eyebrow mb-4">A structured starting point</p><h2 id="audit-bridge-title" class="section-heading">The Digital Friction Audit is where this process begins.</h2><p class="body-copy mt-5">The audit examines relevant parts of a customer or employee journey and identifies where deeper investigation may be worthwhile. It is not an automatic software recommendation engine.</p><a class="button button-primary mt-8" href="{{ route('digital-friction-audit') }}" data-analytics-event="audit_cta_click" data-analytics-location="how_it_works_audit_section">Request a Digital Friction Audit</a></div>
             <div><h3 class="text-lg font-semibold">A typical customer journey</h3><x-process-sequence class="mt-5" :items="['Find', 'Understand', 'Contact', 'Book / Join', 'Pay', 'Receive Service', 'Manage', 'Return']" label="Customer journey examined by a Digital Friction Audit" /><p class="supporting-copy mt-5">The relevant stages vary by business. The audit is a structured place to begin asking questions.</p></div>
         </div>
     </section>
 
     <section class="relative overflow-hidden bg-local-800 text-white" aria-labelledby="how-final-title">
-        <div class="site-container section-space relative z-10 text-center"><h2 id="how-final-title" class="mx-auto max-w-4xl text-3xl leading-tight sm:text-4xl lg:text-5xl">Have a workflow that feels harder than it should?</h2><p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-local-100">Describe the friction. Local Works can help investigate whether it is worth changing and what the simplest practical response might be.</p><div class="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row"><a class="button button-primary border-white bg-white text-local-800 hover:border-local-100 hover:bg-local-100" href="{{ route('digital-friction-audit') }}" data-cta-location="how-final">Request a Digital Friction Audit</a><a class="font-semibold text-local-100 underline decoration-local-500 decoration-2 underline-offset-4 hover:text-white" href="{{ route('contact') }}">Contact Local Works</a></div></div>
+        <div class="site-container section-space relative z-10 text-center"><h2 id="how-final-title" class="mx-auto max-w-4xl text-3xl leading-tight sm:text-4xl lg:text-5xl">Have a workflow that feels harder than it should?</h2><p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-local-100">Describe the friction. Local Works can help investigate whether it is worth changing and what the simplest practical response might be.</p><div class="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row"><a class="button button-primary border-white bg-white text-local-800 hover:border-local-100 hover:bg-local-100" href="{{ route('digital-friction-audit') }}" data-analytics-event="audit_cta_click" data-analytics-location="how_it_works_final">Request a Digital Friction Audit</a><a class="font-semibold text-local-100 underline decoration-local-500 decoration-2 underline-offset-4 hover:text-white" href="{{ route('contact') }}">Contact Local Works</a></div></div>
         <div class="pointer-events-none absolute -bottom-48 left-1/2 size-96 -translate-x-1/2 rounded-full border-[70px] border-local-700/40" aria-hidden="true"></div>
     </section>
 @endsection

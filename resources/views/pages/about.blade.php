@@ -8,7 +8,7 @@
         <x-page-introduction eyebrow="About Local Works" title="Better business systems start with better questions.">
             Local Works is the customer-facing business improvement initiative of Garcia Systems. It helps businesses investigate frustrating customer and staff workflows and determine the simplest practical way to improve them.
             <x-slot:actions>
-                <a class="button button-primary" href="{{ route('digital-friction-audit') }}" data-cta-location="about-hero" data-analytics-action="about-audit-cta">Request a Digital Friction Audit</a>
+                <a class="button button-primary" href="{{ route('digital-friction-audit') }}" data-analytics-event="audit_cta_click" data-analytics-location="about_hero">Request a Digital Friction Audit</a>
                 <a class="button button-secondary" href="{{ route('how-it-works') }}">See How It Works</a>
             </x-slot:actions>
         </x-page-introduction>
@@ -58,6 +58,6 @@
             <div class="site-container"><div class="max-w-3xl"><p class="eyebrow mb-4">Disciplined growth</p><h2 id="start-title" class="section-heading">Start small. Learn from real work.</h2><p class="body-copy mt-5">Local Works is intentionally beginning with a focused website, real Digital Friction Audits, and real conversations before larger internal systems are considered. Operating evidence—not imagined scale—should guide what comes next.</p></div><x-process-sequence class="mt-10" :items="['Small credible website', 'Real Digital Friction Audits', 'Real conversations', 'First proposal', 'First customer', 'Learn from real operations']" label="Local Works evidence-led progression" /></div>
         </section>
 
-        <section class="bg-ink text-white" aria-labelledby="about-final-title"><div class="site-container section-space text-center"><h2 id="about-final-title" class="mx-auto max-w-3xl text-3xl leading-tight sm:text-4xl lg:text-5xl">Have a workflow that deserves a closer look?</h2><p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-stone-300">Start with an audit, or send a general question if you are not sure which path fits.</p><div class="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row"><a class="button button-primary" href="{{ route('digital-friction-audit') }}" data-cta-location="about-final" data-analytics-action="about-audit-cta">Request a Digital Friction Audit</a><a class="button button-secondary" href="{{ route('contact') }}">Contact Local Works</a></div></div></section>
+        <section class="bg-ink text-white" aria-labelledby="about-final-title"><div class="site-container section-space text-center"><h2 id="about-final-title" class="mx-auto max-w-3xl text-3xl leading-tight sm:text-4xl lg:text-5xl">Have a workflow that deserves a closer look?</h2><p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-stone-300">Start with an audit, or send a general question if you are not sure which path fits.</p><div class="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row"><a class="button button-primary" href="{{ route('digital-friction-audit') }}" data-analytics-event="audit_cta_click" data-analytics-location="about_final">Request a Digital Friction Audit</a><a class="button button-secondary" href="{{ route('contact') }}">Contact Local Works</a></div></div></section>
     </div>
 @endsection

@@ -130,6 +130,21 @@ class AuditRequestFlowTest extends TestCase
         $this->get('/thank-you')->assertRedirect(route('digital-friction-audit'));
     }
 
+    public function test_success_analytics_marker_is_server_confirmed_and_one_time(): void
+    {
+        $this->post(route('audit-requests.store'), $this->validData())->assertRedirect(route('thank-you'));
+
+        $this->get(route('thank-you'))
+            ->assertOk()
+            ->assertSee('data-analytics-success-event="audit_form_submit"', false);
+        $this->get(route('thank-you'))->assertRedirect(route('digital-friction-audit'));
+
+        $this->followingRedirects()
+            ->from(route('digital-friction-audit'))
+            ->post(route('audit-requests.store'), array_merge($this->validData(), ['email' => 'invalid']))
+            ->assertDontSee('data-analytics-success-event="audit_form_submit"', false);
+    }
+
     public function test_mail_failure_does_not_discard_the_stored_request(): void
     {
         Mail::shouldReceive('to')->once()->andThrow(new RuntimeException('Transport unavailable'));
