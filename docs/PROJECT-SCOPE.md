@@ -37,6 +37,8 @@ Never fabricate Local Works customers, testimonials, logos, case studies, revenu
 
 ## Current implementation checkpoint
 
-The current foundation provides nine named public view routes, one shared accessible public layout, a small reusable page-introduction component, minimal styling tokens, and feature tests. It does not collect audit requests yet and does not contain business-domain models or migrations.
+The current public shell provides nine named view routes and a shared, mobile-first Blade layout. Its centrally defined Tailwind theme uses a natural green, warm neutral surfaces, charcoal text, a system font stack, consistent spacing, buttons, links, cards, and media-frame styling. Reusable Blade components provide the text-based brand, flexible page introduction, and responsive five-step process sequence. The header includes a small progressive-enhancement menu script with explicit state, Escape-key handling, and focus management; no frontend framework has been introduced.
 
-The next appropriate product increment is the explicitly scoped Digital Friction Audit request flow, including its data-minimization, validation, spam prevention, notification, privacy, and retention decisions. It should not become an audit engine or customer account system.
+The pages remain intentionally brief. The homepage is only a simple hero and positioning line, the Digital Friction Audit does not yet have a form, and contact details are not invented. Public content remains file-backed. Future photography should use the `.media-frame` presentation primitive, meaningful alt text, and verified real-world imagery; example imagery must never be represented as a Local Works customer.
+
+The next appropriate product increment is the explicitly scoped full homepage—not additional application architecture. The later Digital Friction Audit request flow will require explicit data-minimization, validation, spam prevention, notification, privacy, and retention decisions. It must not become an audit engine or customer account system.

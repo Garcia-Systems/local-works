@@ -57,7 +57,7 @@ The Operating Lab concluded: **MORE BUSINESS VALIDATION FIRST.** See [`docs/PROJ
 - SQLite for simple local development; MySQL-compatible configuration for production
 - A conventional stateless Laravel monolith suitable for Laravel Cloud
 
-There are no authenticated or application routes. Public pages are direct named view routes in `routes/web.php`, sharing `resources/views/layouts/public.blade.php`. The deliberately small frontend foundation establishes accessible structure and a few future-facing colors without pretending the final design is complete.
+There are no authenticated or application routes. Public pages are direct named view routes in `routes/web.php`, sharing `resources/views/layouts/public.blade.php`. Local Works design tokens and presentation primitives live in `resources/css/app.css`; small, repeated Blade patterns live in `resources/views/components`. The only custom browser behavior is the dependency-free mobile navigation in `resources/js/app.js`.
 
 ## Local setup
 
