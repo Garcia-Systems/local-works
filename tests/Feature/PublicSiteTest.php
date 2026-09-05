@@ -17,6 +17,37 @@ class PublicSiteTest extends TestCase
             ->assertSee('href="'.route('digital-friction-audit').'"', false);
     }
 
+    public function test_homepage_presents_the_audit_path_and_decision_method(): void
+    {
+        $response = $this->get('/');
+
+        $response
+            ->assertOk()
+            ->assertSee('<h1 id="home-title"', false)
+            ->assertSee('Make your business easier to use.')
+            ->assertSee('Not every problem needs custom software.')
+            ->assertSeeInOrder(['Observe', 'Understand', 'Measure', 'Choose', 'Deliver'])
+            ->assertSeeInOrder(['Configure', 'Integrate', 'Automate', 'Custom Build', 'Leave Alone'])
+            ->assertSee('data-cta-location="hero"', false)
+            ->assertSee('data-cta-location="audit-section"', false)
+            ->assertSee('data-cta-location="final-cta"', false)
+            ->assertSee('href="'.route('digital-friction-audit').'"', false)
+            ->assertSee('What’s harder about doing business with you than it needs to be?')
+            ->assertDontSee('Log in')
+            ->assertDontSee('Register');
+    }
+
+    public function test_homepage_does_not_present_fabricated_proof_or_an_audit_form(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertDontSee('Trusted by')
+            ->assertDontSee('customers served')
+            ->assertDontSee('guaranteed savings')
+            ->assertDontSee('<form', false)
+            ->assertDontSee('name="email"', false);
+    }
+
     public function test_public_navigation_contains_expected_destinations_and_mobile_controls(): void
     {
         $response = $this->get('/problems');
