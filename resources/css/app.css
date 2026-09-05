@@ -23,7 +23,7 @@
 
 @layer base {
     html { scroll-behavior: smooth; }
-    body { @apply bg-warm-50 font-sans text-ink antialiased; }
+    body { @apply overflow-x-hidden bg-warm-50 font-sans text-ink antialiased; }
     h1, h2, h3 { @apply text-balance font-semibold tracking-[-0.025em]; }
     p { @apply text-pretty; }
     a { text-underline-offset: 0.2em; }

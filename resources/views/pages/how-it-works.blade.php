@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'How It Works')
+@section('title', 'How It Works | Local Works by Garcia Systems')
 @section('meta_description', 'See how Local Works observes, understands, measures, chooses, and delivers practical workflow improvements without assuming custom software is the answer.')
 
 @section('content')

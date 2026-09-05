@@ -3,14 +3,31 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="@yield('meta_description', 'Local Works helps businesses identify frustrating customer and employee workflows and find the simplest practical way to improve them.')">
-    <link rel="canonical" href="{{ url()->current() }}">
+    @php
+        $pageTitle = trim($__env->yieldContent('title', 'Local Works by Garcia Systems'));
+        $pageDescription = trim($__env->yieldContent('meta_description', 'Local Works helps businesses identify frustrating customer and employee workflows and find the simplest practical way to improve them.'));
+        $canonicalUrl = rtrim(config('app.url'), '/').'/'.ltrim(request()->path() === '/' ? '' : request()->path(), '/');
+    @endphp
+    <meta name="description" content="{{ $pageDescription }}">
+    <link rel="canonical" href="{{ $canonicalUrl }}">
+    @hasSection('robots')<meta name="robots" content="@yield('robots')">@endif
     <meta property="og:type" content="@yield('og_type', 'website')">
     <meta property="og:site_name" content="Local Works by Garcia Systems">
-    <meta property="og:title" content="@yield('title', 'Local Works') | by Garcia Systems">
-    <meta property="og:description" content="@yield('meta_description', 'Make your business easier to use with practical workflow improvements.')">
-    <meta property="og:url" content="{{ url()->current() }}">
-    <title>@yield('title', 'Local Works') | by Garcia Systems</title>
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDescription }}">
+    <meta property="og:url" content="{{ $canonicalUrl }}">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ $pageTitle }}">
+    <meta name="twitter:description" content="{{ $pageDescription }}">
+    <title>{{ $pageTitle }}</title>
+    <script type="application/ld+json">{!! json_encode([
+        '@context' => 'https://schema.org',
+        '@graph' => [
+            ['@type' => 'Organization', '@id' => rtrim(config('app.url'), '/').'/#organization', 'name' => 'Garcia Systems', 'url' => rtrim(config('app.url'), '/')],
+            ['@type' => 'WebSite', '@id' => rtrim(config('app.url'), '/').'/#website', 'name' => 'Local Works by Garcia Systems', 'url' => rtrim(config('app.url'), '/'), 'publisher' => ['@id' => rtrim(config('app.url'), '/').'/#organization']],
+        ],
+    ], JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) !!}</script>
+    @stack('structured-data')
     @if (config('analytics.enabled') && config('analytics.provider') === 'plausible' && filled(config('analytics.site_id')))
         <meta name="analytics-provider" content="plausible">
         <script defer data-domain="{{ config('analytics.site_id') }}" src="https://plausible.io/js/script.js"></script>

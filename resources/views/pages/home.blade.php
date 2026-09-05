@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Make your business easier to use')
+@section('title', 'Local Works by Garcia Systems | Make Your Business Easier to Use')
 @section('meta_description', 'Local Works helps businesses find frustrating customer and staff workflows and choose the simplest practical way to improve them.')
 
 @section('content')
