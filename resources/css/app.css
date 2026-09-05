@@ -238,6 +238,31 @@
     .contact-paths article { @apply flex flex-col items-start rounded-2xl border border-warm-200 bg-white p-6 shadow-[0_12px_35px_rgba(32,38,34,0.05)] sm:p-8; }
     .contact-paths h3 { @apply mt-3 text-2xl; }
     .contact-paths article > p:not(.eyebrow) { @apply mt-4 grow leading-7 text-muted; }
+
+    .insight-list { @apply divide-y divide-warm-200 border-y border-warm-200; }
+    .insight-list article { @apply grid gap-5 py-8 sm:py-10 lg:grid-cols-[9rem_minmax(0,1fr)_7rem] lg:items-start lg:gap-10; }
+    .insight-list h3 { @apply text-2xl leading-tight sm:text-3xl; }
+    .insight-list h3 a { @apply hover:text-local-700 hover:underline; }
+    .insight-list article > div:nth-child(2) > p { @apply mt-4 max-w-3xl leading-7 text-muted; }
+    .insight-meta { @apply flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted; }
+    .insight-meta span { @apply font-bold uppercase tracking-[0.12em] text-local-700; }
+    .insight-tags { @apply flex flex-wrap gap-2; }
+    .insight-list .insight-tags { @apply mt-5; }
+    .insight-tags li { @apply rounded-full border border-warm-200 bg-warm-50 px-3 py-1 text-xs font-semibold text-muted; }
+    .insight-read-link { @apply w-fit font-bold text-local-700 underline decoration-2 underline-offset-4 hover:text-local-800 lg:justify-self-end; }
+    .article-prose { @apply max-w-[43rem] text-[1.0625rem] leading-8 text-muted; }
+    .article-prose h2 { @apply mb-5 mt-12 text-3xl leading-tight text-ink first:mt-0 sm:text-4xl; }
+    .article-prose h3 { @apply mb-4 mt-9 text-2xl leading-tight text-ink; }
+    .article-prose p { @apply my-5; }
+    .article-prose ul, .article-prose ol { @apply my-6 grid gap-3 pl-6; }
+    .article-prose ul { @apply list-disc; }
+    .article-prose ol { @apply list-decimal; }
+    .article-prose li { @apply pl-1; }
+    .article-prose strong { @apply font-bold text-ink; }
+    .article-prose em { @apply italic; }
+    .article-prose a { @apply break-words font-semibold text-local-700 underline decoration-2 hover:text-local-800; }
+    .article-prose blockquote { @apply my-8 border-l-4 border-local-500 bg-local-50 px-5 py-3 text-lg text-ink; }
+    .article-prose blockquote p { @apply my-1; }
 }
 
 @media (min-width: 64rem) {
