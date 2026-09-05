@@ -178,6 +178,8 @@
     .form-notice { @apply grid gap-1 rounded-xl border border-local-200 bg-local-50 p-4 text-sm leading-6; }
     .form-notice strong { @apply text-local-800; }
     .form-notice span { @apply text-muted; }
+    .form-error-summary { @apply grid gap-1 rounded-xl border border-red-300 bg-red-50 p-4 text-sm leading-6 text-red-900; }
+    .honeypot { @apply absolute -left-[10000px] h-px w-px overflow-hidden; }
     .audit-form { @apply grid gap-10; }
     .audit-form fieldset { @apply min-w-0 border-0 border-t border-warm-200 p-0 pt-7; }
     .audit-form legend { @apply px-0 pr-4 text-2xl font-semibold tracking-[-0.025em]; }
@@ -190,6 +192,8 @@
     .field input { @apply min-h-12; }
     .field textarea { @apply min-h-32 resize-y; }
     .field > p { @apply mt-2 text-sm leading-5 text-muted; }
+    .field > .field-error { @apply font-semibold text-red-700; }
+    .field [aria-invalid="true"] { @apply border-red-600 focus:border-red-600 focus:ring-red-200; }
     .privacy-note { @apply border-l-4 border-local-500 bg-local-50 px-4 py-3 text-sm leading-6 text-muted; }
     .privacy-note a { @apply font-semibold text-local-700 underline decoration-2; }
     .next-steps { @apply border-t border-local-200; counter-reset: steps; }

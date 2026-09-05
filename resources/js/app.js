@@ -23,3 +23,5 @@ if (toggle && menu) {
         if (window.innerWidth >= 1024) setMenu(false);
     });
 }
+
+document.querySelector('[data-validation-errors]')?.focus();

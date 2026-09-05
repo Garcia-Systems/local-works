@@ -66,7 +66,7 @@ class PublicSiteTest extends TestCase
             ->assertDontSee('Register');
     }
 
-    public function test_audit_page_explains_the_investigation_and_renders_the_intake_preview(): void
+    public function test_audit_page_explains_the_investigation_and_renders_the_intake(): void
     {
         $response = $this->get('/digital-friction-audit');
 
@@ -86,26 +86,25 @@ class PublicSiteTest extends TestCase
             ->assertDontSee('Register');
     }
 
-    public function test_audit_intake_is_accessible_and_intentionally_does_not_submit_yet(): void
+    public function test_audit_intake_is_accessible_and_posts_to_the_submission_route(): void
     {
         $response = $this->get('/digital-friction-audit');
 
-        foreach (['name', 'email', 'phone', 'business_name', 'business_website', 'business_type', 'location', 'friction', 'current_process', 'desired_improvement', 'additional_context'] as $field) {
+        foreach (['name', 'email', 'phone', 'business_name', 'business_website', 'business_type', 'business_location', 'friction_description', 'current_process', 'desired_improvement', 'additional_context'] as $field) {
             $response->assertSee('name="'.$field.'"', false);
         }
 
         $response
             ->assertSee('type="email"', false)
             ->assertSee('type="tel"', false)
-            ->assertSee('type="url"', false)
+            ->assertSee('action="'.route('audit-requests.store').'" method="POST"', false)
             ->assertSee('name="name" type="text" autocomplete="name" required aria-required="true"', false)
             ->assertSee('name="email" type="email" inputmode="email" autocomplete="email" required aria-required="true"', false)
             ->assertSee('name="business_name" type="text" autocomplete="organization" required aria-required="true"', false)
-            ->assertSee('name="friction" rows="5" required aria-required="true"', false)
+            ->assertSee('name="friction_description" rows="5" required aria-required="true"', false)
             ->assertSee('name="current_process" rows="5" required aria-required="true"', false)
-            ->assertSee('onsubmit="return false"', false)
-            ->assertSee('type="submit" disabled', false)
-            ->assertSee('requests are not being submitted or stored yet')
+            ->assertSee('name="_token"', false)
+            ->assertDontSee('type="submit" disabled', false)
             ->assertDontSee('request received', false);
     }
 
@@ -148,7 +147,6 @@ class PublicSiteTest extends TestCase
             'insights' => ['/insights', 'Notes on simpler business operations.'],
             'contact' => ['/contact', 'Start a conversation.'],
             'privacy' => ['/privacy', 'Privacy matters.'],
-            'thank you' => ['/thank-you', 'Thank you.'],
         ];
     }
 }

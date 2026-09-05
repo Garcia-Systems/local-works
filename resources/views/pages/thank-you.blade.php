@@ -1,9 +1,11 @@
 @extends('layouts.public')
-@section('title', 'Thank You')
-@section('meta_description', 'Local Works confirmation page reserved for the future Digital Friction Audit request flow.')
+@section('title', 'Request Received | Local Works')
+@section('meta_description', 'Confirmation for a submitted Local Works Digital Friction Audit request.')
 @section('content')
-    <x-page-introduction eyebrow="Confirmation" title="Thank you.">
-        This polished shell is reserved for a truthful confirmation after the future Digital Friction Audit request flow is implemented. It does not imply that a request has been submitted.
+    <div data-submission-event="audit_form_submit">
+    <x-page-introduction eyebrow="Request received" title="Your request has been received.">
+        Local Works will review the information you provided. If a conversation makes sense, we will follow up. You do not need to diagnose the solution or provide detailed system access at this stage.
         <x-slot:actions><a class="button button-secondary" href="{{ route('home') }}">Return home</a></x-slot:actions>
     </x-page-introduction>
+    </div>
 @endsection
