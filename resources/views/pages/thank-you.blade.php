@@ -1,6 +1,7 @@
 @extends('layouts.public')
-@section('title', 'Request Received | Local Works')
+@section('title', 'Request Received | Local Works by Garcia Systems')
 @section('meta_description', 'Confirmation for a submitted Local Works Digital Friction Audit request.')
+@section('robots', 'noindex, nofollow')
 @section('content')
     <div data-submission-event="audit_form_submit" data-analytics-success-event="audit_form_submit">
     <x-page-introduction eyebrow="Request received" title="Your request has been received.">

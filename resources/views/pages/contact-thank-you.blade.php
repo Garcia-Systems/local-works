@@ -1,7 +1,8 @@
 @extends('layouts.public')
 
-@section('title', 'Message received')
+@section('title', 'Message Received | Local Works by Garcia Systems')
 @section('meta_description', 'Confirmation that Local Works received a general contact message.')
+@section('robots', 'noindex, nofollow')
 
 @section('content')
     <section class="bg-white" aria-labelledby="contact-thank-you-title" data-submission-event="contact_form_submit" data-analytics-success-event="contact_form_submit">

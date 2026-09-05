@@ -1,6 +1,17 @@
 @extends('layouts.public')
-@section('title', $article['title'].' | Local Works')
+@section('title', $article['title'].' | Local Works by Garcia Systems')
 @section('meta_description', $article['summary'])
+@section('og_type', 'article')
+@push('structured-data')
+<script type="application/ld+json">{!! json_encode([
+    '@context' => 'https://schema.org', '@type' => 'Article',
+    'headline' => $article['title'], 'description' => $article['summary'],
+    'datePublished' => $article['published_at']->toDateString(),
+    'dateModified' => ($article['updated_at'] ?? $article['published_at'])->toDateString(),
+    'mainEntityOfPage' => route('insights.show', $article['slug']),
+    'publisher' => ['@id' => rtrim(config('app.url'), '/').'/#organization'],
+], JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) !!}</script>
+@endpush
 @section('og_type', 'article')
 @section('content')
     <article data-analytics-view="insight-article">

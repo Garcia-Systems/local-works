@@ -137,3 +137,37 @@ Do not add public customer reviews, fabricated testimonials, fabricated case stu
 ## Truthfulness requirement
 
 The website must never invent customers, testimonials, customer logos, case studies, revenue, savings percentages, conversion improvements, delivery partnerships, developer networks, customer counts, or years of Local Works operating history. Hypothetical scenarios are permitted only when clearly labeled as examples. Real evidence must come from real customer interactions.
+
+## Production quality and launch requirements
+
+The intended production surface is deliberately small: the public routes in the table above, the published file-backed Insight routes, `robots.txt`, `sitemap.xml`, the two form POST endpoints, and Laravel's `/up` health check. There is no authentication, admin area, CRM, CMS, customer portal, lead-record API, or public record view. Keep it that way unless real operating evidence changes the Version 1 scope.
+
+Both forms use Laravel CSRF protection, explicit server-side type and length validation, an off-screen honeypot, and a five-submissions-per-ten-minutes per-client throttle. A valid request is persisted before a synchronous email notification is attempted; notification failures log only the record identifier. Confirmation routes use one-time session state and are marked `noindex`. First-touch landing path, referrer, and the first UTM set are held in the session and copied to a successfully stored request without overwriting later in the visit. Do not put personal data in UTM values.
+
+Published Insights remain reviewed Markdown files; drafts and future-dated files are excluded from article routes and the generated sitemap. The parser strips raw HTML and blocks unsafe links. See `docs/INSIGHTS.md` before publishing and preserve its evidence-label rules.
+
+Before launch, configure at least:
+
+- `APP_ENV=production`, `APP_DEBUG=false`, a generated `APP_KEY`, and the one canonical HTTPS `APP_URL` (used by canonical links, structured data, robots, and the sitemap).
+- A durable production database and backups through `DB_URL` or the standard `DB_*` variables; run `php artisan migrate --force` during release.
+- A working `MAIL_MAILER` transport, `MAIL_FROM_ADDRESS`, `MAIL_FROM_NAME`, and monitored `LOCAL_WORKS_INTAKE_EMAIL`. Do not leave the production mailer as `log`.
+- A durable `SESSION_DRIVER` and `CACHE_STORE` appropriate to the platform. Set `SESSION_SECURE_COOKIE=true` when HTTPS is terminated at the deployment platform, and configure trusted proxies there correctly.
+- Production log destination and level (normally `LOG_LEVEL=warning` or as operations require). Never add form payloads or contact fields to logs.
+- Optional Plausible values described in `docs/ANALYTICS.md`. Analytics is disabled by default, uses no form content, and must never block the site.
+
+The site sends modest browser security headers (`nosniff`, deny framing, a strict-origin referrer policy, and a restricted permissions policy). HTTPS and HSTS should be enforced by the deployment platform after HTTPS behavior is verified. The privacy page describes the implementation but is not a substitute for jurisdiction-specific legal review or an operational retention policy.
+
+Launch checks:
+
+```bash
+COMPOSER_ALLOW_SUPERUSER=1 composer install --no-interaction
+COMPOSER_ALLOW_SUPERUSER=1 composer test
+./vendor/bin/pint --test
+npm ci
+npm run build
+php artisan route:list
+COMPOSER_ALLOW_SUPERUSER=1 composer audit
+npm audit --omit=dev
+```
+
+Also manually check keyboard operation, focus, forms and mobile layout in current Chromium, Firefox, and Safari/WebKit; submit both forms against the production mail transport; inspect the rendered 404/419/429/500 pages; and verify the canonical host, `robots.txt`, sitemap, analytics network request (if enabled), and absence of browser console errors.

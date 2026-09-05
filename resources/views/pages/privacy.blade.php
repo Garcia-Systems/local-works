@@ -1,6 +1,6 @@
 @extends('layouts.public')
-@section('title', 'Privacy')
-@section('meta_description', 'Privacy information for the Local Works by Garcia Systems website.')
+@section('title', 'Privacy | Local Works by Garcia Systems')
+@section('meta_description', 'Learn what the Local Works website collects through audit and contact forms, first-touch attribution, and optional privacy-conscious analytics.')
 @section('content')
     <x-page-introduction eyebrow="Supporting information" title="Privacy matters.">
         Local Works collects the information you choose to provide in a Digital Friction Audit request or general contact message so Garcia Systems can evaluate it and respond when a conversation makes sense.

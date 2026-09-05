@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Problems We Investigate')
+@section('title', 'Problems We Investigate | Local Works by Garcia Systems')
 @section('meta_description', 'Local Works investigates unnecessary customer and staff workflow friction, repetitive work, and disconnected systems to find the simplest sensible response.')
 
 @section('content')

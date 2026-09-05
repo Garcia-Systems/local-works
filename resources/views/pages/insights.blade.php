@@ -1,5 +1,5 @@
 @extends('layouts.public')
-@section('title', 'Insights | Local Works')
+@section('title', 'Insights | Local Works by Garcia Systems')
 @section('meta_description', 'Practical observations and lessons about customer workflows, staff processes, automation, integration and business technology decisions.')
 @section('content')
     <div data-analytics-view="insights-index">
