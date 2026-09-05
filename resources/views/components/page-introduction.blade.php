@@ -1,9 +1,12 @@
 @props(['eyebrow' => null, 'title'])
 
-<section class="max-w-3xl" aria-labelledby="page-title">
-    @if ($eyebrow)
-        <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-local-green">{{ $eyebrow }}</p>
-    @endif
-    <h1 id="page-title" class="text-4xl font-bold tracking-tight sm:text-5xl">{{ $title }}</h1>
-    <div class="mt-6 text-lg leading-8 text-stone-700">{{ $slot }}</div>
+<section class="border-b border-warm-200 bg-white" aria-labelledby="page-title">
+    <div class="site-container section-space">
+        <div class="reading-container">
+            @if ($eyebrow)<p class="eyebrow mb-4">{{ $eyebrow }}</p>@endif
+            <h1 id="page-title" class="page-heading">{{ $title }}</h1>
+            <div class="body-large mt-6 max-w-2xl">{{ $slot }}</div>
+            @isset($actions)<div class="mt-8 flex flex-wrap gap-3">{{ $actions }}</div>@endisset
+        </div>
+    </div>
 </section>
