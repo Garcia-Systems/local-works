@@ -46,7 +46,7 @@ class ContactRequestFlowTest extends TestCase
     public function test_required_fields_are_validated(string $field, mixed $value): void
     {
         $this->from(route('contact'))->post(route('contact-requests.store'), array_merge($this->validData(), [$field => $value]))
-            ->assertRedirect(route('contact'))->assertSessionHasErrors($field);
+            ->assertRedirect(route('contact').'#general-contact')->assertSessionHasErrors($field);
         $this->assertDatabaseCount('contact_requests', 0);
         Mail::assertNothingSent();
     }
@@ -93,7 +93,7 @@ class ContactRequestFlowTest extends TestCase
     public function test_honeypot_and_rate_limit_protect_the_form(): void
     {
         $this->from(route('contact'))->post(route('contact-requests.store'), array_merge($this->validData(), ['company_fax' => 'bot']))
-            ->assertRedirect(route('contact'))->assertSessionHasErrors('company_fax');
+            ->assertRedirect(route('contact').'#general-contact')->assertSessionHasErrors('company_fax');
         $this->assertDatabaseCount('contact_requests', 0);
         Mail::assertNothingSent();
 
