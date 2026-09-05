@@ -66,6 +66,49 @@ class PublicSiteTest extends TestCase
             ->assertDontSee('Register');
     }
 
+    public function test_audit_page_explains_the_investigation_and_renders_the_intake_preview(): void
+    {
+        $response = $this->get('/digital-friction-audit');
+
+        $response
+            ->assertOk()
+            ->assertSee('Find what is harder than it needs to be.')
+            ->assertSeeInOrder(['Find', 'Understand', 'Contact', 'Book / Join', 'Pay', 'Receive Service', 'Manage', 'Return'])
+            ->assertSeeInOrder(['Observed fact', 'Possible friction', 'Unknowns', 'Questions', 'Evidence', 'Decision'])
+            ->assertSeeInOrder(['Configure', 'Integrate', 'Automate', 'Custom Build', 'Leave Alone'])
+            ->assertSee('Hypothetical examples')
+            ->assertSee('not Local Works customer stories')
+            ->assertSee('href="'.route('how-it-works').'"', false)
+            ->assertSee('href="'.route('privacy').'"', false)
+            ->assertSee('data-page="digital-friction-audit"', false)
+            ->assertSee('data-analytics-form="audit-request"', false)
+            ->assertDontSee('Log in')
+            ->assertDontSee('Register');
+    }
+
+    public function test_audit_intake_is_accessible_and_intentionally_does_not_submit_yet(): void
+    {
+        $response = $this->get('/digital-friction-audit');
+
+        foreach (['name', 'email', 'phone', 'business_name', 'business_website', 'business_type', 'location', 'friction', 'current_process', 'desired_improvement', 'additional_context'] as $field) {
+            $response->assertSee('name="'.$field.'"', false);
+        }
+
+        $response
+            ->assertSee('type="email"', false)
+            ->assertSee('type="tel"', false)
+            ->assertSee('type="url"', false)
+            ->assertSee('name="name" type="text" autocomplete="name" required aria-required="true"', false)
+            ->assertSee('name="email" type="email" inputmode="email" autocomplete="email" required aria-required="true"', false)
+            ->assertSee('name="business_name" type="text" autocomplete="organization" required aria-required="true"', false)
+            ->assertSee('name="friction" rows="5" required aria-required="true"', false)
+            ->assertSee('name="current_process" rows="5" required aria-required="true"', false)
+            ->assertSee('onsubmit="return false"', false)
+            ->assertSee('type="submit" disabled', false)
+            ->assertSee('requests are not being submitted or stored yet')
+            ->assertDontSee('request received', false);
+    }
+
     public function test_public_navigation_contains_expected_destinations_and_mobile_controls(): void
     {
         $response = $this->get('/problems');
@@ -99,7 +142,7 @@ class PublicSiteTest extends TestCase
         return [
             'home' => ['/', 'Make your business easier to use.'],
             'how it works' => ['/how-it-works', 'Start with how the work actually gets done.'],
-            'audit' => ['/digital-friction-audit', 'Find the friction worth fixing.'],
+            'audit' => ['/digital-friction-audit', 'Find what is harder than it needs to be.'],
             'problems' => ['/problems', 'Everyday work should not be this hard.'],
             'about' => ['/about', 'Practical business improvement, locally grounded.'],
             'insights' => ['/insights', 'Notes on simpler business operations.'],
