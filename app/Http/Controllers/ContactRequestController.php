@@ -23,7 +23,11 @@ class ContactRequestController extends Controller
         try {
             Mail::to(config('services.local_works.intake_email'))->send(new NewContactRequestNotification($contactRequest));
         } catch (Throwable $exception) {
-            Log::error('Contact request notification failed.', ['contact_request_id' => $contactRequest->id]);
+            Log::error('Contact request notification could not be sent.', [
+                'contact_request_id' => $contactRequest->getKey(),
+                'route' => $request->route()->getName(),
+                'exception_class' => $exception::class,
+            ]);
         }
 
         return redirect()->route('contact.thank-you')->with('contact_submitted', true);

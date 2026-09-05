@@ -171,3 +171,56 @@ npm audit --omit=dev
 ```
 
 Also manually check keyboard operation, focus, forms and mobile layout in current Chromium, Firefox, and Safari/WebKit; submit both forms against the production mail transport; inspect the rendered 404/419/429/500 pages; and verify the canonical host, `robots.txt`, sitemap, analytics network request (if enabled), and absence of browser console errors.
+
+## Production Runbook
+
+This runbook targets Laravel Cloud, PHP 8.3, MySQL 8.4, and Vite assets. Laravel Cloud's current build/deploy interface is the authority if its defaults change. Version 1 needs a Laravel web environment, a durable MySQL database, a transactional email provider, and optionally a Plausible site. It needs no worker, Redis service, persistent customer-file disk, or production seeding.
+
+### Required configuration
+
+| Area | Production values |
+| --- | --- |
+| Application | `APP_NAME`, `APP_ENV=production`, generated `APP_KEY`, `APP_DEBUG=false`, canonical HTTPS `APP_URL` |
+| Database | Either platform `DB_URL`, or `DB_CONNECTION=mysql`, `DB_HOST`, `DB_PORT=3306`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` |
+| Mail | `MAIL_MAILER` (normally `smtp`), provider `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_SCHEME`, verified `MAIL_FROM_ADDRESS`, `MAIL_FROM_NAME="Local Works by Garcia Systems"`, monitored `LOCAL_WORKS_INTAKE_EMAIL` |
+| Session | `SESSION_DRIVER=database`, `SESSION_LIFETIME`, `SESSION_SECURE_COOKIE=true`; leave `SESSION_DOMAIN` empty unless the cookie must span known subdomains |
+| Cache | `CACHE_STORE=database`; this durable shared store also supports the public-form rate limiter without Redis |
+| Logging | `LOG_CHANNEL=stderr`, `LOG_LEVEL=warning` so Laravel Cloud can collect process output |
+| Analytics | Keep `ANALYTICS_ENABLED=false`, or set it to `true` with `ANALYTICS_PROVIDER=plausible` and the public `ANALYTICS_SITE_ID` |
+| Runtime | `QUEUE_CONNECTION=sync`; no queue worker is required. `FILESYSTEM_DISK=local` may remain local because Version 1 has no uploads or generated customer files. |
+
+Production startup fails with a clear message if the key/debug, HTTPS URL, MySQL, mail, database session/cache, secure-cookie, or enabled analytics settings are unsafe or incomplete. Set every secret in Laravel Cloud, never in Git. The final hostname and www/non-www choice are external launch decisions; `APP_URL` must exactly match that choice. Do not add speculative redirects.
+
+Laravel's normal forwarded-header handling should be used behind Laravel Cloud; do not parse forwarding headers or trust user-selected headers in application code. Confirm generated URLs, request scheme, and throttling client IPs in the deployed environment. Terminate HTTPS at the platform, test it, then enable platform HSTS. `SESSION_SECURE_COOKIE=true`, Laravel's HTTP-only session cookie, and SameSite=Lax are the intended settings.
+
+### Deploy
+
+1. Create the Laravel Cloud application/environment and MySQL 8.4 database; attach the database and configure all environment values above before booting production code.
+2. Use reproducible installs: `composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader` and `npm ci && npm run build`. Commit both dependency lockfiles before launch.
+3. Use one release command: `php artisan migrate --force && php artisan optimize`. In Laravel 12, `optimize` prepares the framework's configuration, events, routes, and views; separate cache commands are diagnostic checks, not additional release steps.
+4. Never run `migrate:fresh`, `db:wipe`, `db:seed`, destructive seeders, or an automatic `migrate:rollback` in production. No production seed data is required.
+5. Request `/up`, then work through [`docs/production-launch-checklist.md`](docs/production-launch-checklist.md). Standard Laravel Cloud deployment is proportionate for the initial low-volume site; justify more elaborate strategies only from actual traffic or business risk.
+
+The checked-in migrations are self-contained and create both lead tables plus the framework database session/cache tables. They are compatible with SQLite tests and MySQL. Lead-table status and timestamps are intentionally not additionally indexed: Version 1 has no in-app listing/query workflow and the tables will be small. Add indexes only when a real query requires them. Database sessions expire according to `SESSION_LIFETIME`; Laravel's normal session lottery performs probabilistic cleanup.
+
+### Verify and operate
+
+Use exactly one clearly labeled controlled launch identity (for example, business name `DEPLOYMENT TEST — YYYY-MM-DD`) to submit one Audit and one Contact request. Confirm each stored record, synchronous notification, success page, first-touch attribution, and server-confirmed analytics conversion. Do not send tests to prospects. If cleanup is required, identify records by the unique label and remove only those records with trusted database/platform tooling after taking appropriate care.
+
+The mail provider is not selected or configured by this repository. Complete its sender/domain verification and provider-directed SPF/DKIM DNS work, then verify delivery through provider logs and the monitored inbox. Mail happens after persistence; a failure keeps the lead and writes only record ID, route, and exception class to application logs. Inspect leads initially through notification email and secure database tooling. **If manually managing leads becomes painful, configure an existing CRM before building one.**
+
+Use Laravel Cloud health/deployment/database signals, application stderr logs, mail-provider delivery status, and Plausible (when enabled) as the intentionally small observability set. Configure platform/provider alerts for deployment, application, database, and mail failures. Do not log form payloads or contact details. Establish a documented lead-retention policy as real operational and legal requirements become known; do not automatically delete or assume indefinite retention is correct.
+
+### Back up and recover
+
+Enable provider-managed backups for the production MySQL database before accepting leads. Choose retention appropriate to operational/legal needs, record who can restore, and periodically prove restoration in a non-production environment.
+
+For recovery: identify the failure; stop further harmful changes if needed; select a known-good provider backup; restore it using protected hosting tooling; redeploy known-good code if necessary; run only migrations appropriate to that code/schema state; verify Audit and Contact records; then smoke-test both forms. Never expose restoration through the website.
+
+### Roll back
+
+Identify and redeploy the last known-good commit through Laravel Cloud. **Code rollback and database rollback are different decisions.** Review every migration applied by the failed release. After an additive migration, leaving the added schema while reverting code is usually safer than rolling schema back. Never reflexively run `migrate:rollback` against real lead data; make a backup and approve any schema reversal separately.
+
+### Intentionally absent
+
+There is no admin dashboard, CRM, account or customer portal, queue/worker, upload store, custom backup service, or custom observability/alerting stack. Marketing and Insight content is deployed from Git. These omissions preserve the documented Version 1 scope.
