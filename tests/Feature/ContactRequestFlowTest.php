@@ -2,12 +2,14 @@
 
 namespace Tests\Feature;
 
+use App\Mail\ContactRequestConfirmation;
 use App\Mail\NewContactRequestNotification;
 use App\Models\ContactRequest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use Mockery;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
 use Tests\TestCase;
@@ -48,6 +50,13 @@ class ContactRequestFlowTest extends TestCase
         ]);
         Mail::assertSent(NewContactRequestNotification::class, fn ($mail): bool => $mail->hasTo('intake@local.test') && $mail->contactRequest->email === 'avery@example.com'
         );
+        Mail::assertSent(ContactRequestConfirmation::class, function ($mail): bool {
+            return $mail->hasTo('avery@example.com')
+                && $mail->envelope()->subject === 'We received your message'
+                && str_contains($mail->render(), 'Hello Avery Owner,')
+                && str_contains($mail->render(), 'I have a general question about Local Works.')
+                && str_contains($mail->render(), '555-0100');
+        });
         Http::assertSent(fn ($request): bool => $request->url() === 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
             && $request['secret'] === 'test-secret'
             && $request['response'] === 'valid-test-token'
@@ -177,9 +186,23 @@ class ContactRequestFlowTest extends TestCase
             ->assertDontSee('data-analytics-success-event="contact_form_submit"', false);
     }
 
-    public function test_mail_failure_does_not_discard_the_message(): void
+    public function test_internal_mail_failure_does_not_discard_message_or_prevent_confirmation(): void
     {
-        Mail::shouldReceive('to')->once()->andThrow(new RuntimeException('Transport unavailable'));
+        $confirmation = Mockery::mock();
+        $confirmation->shouldReceive('send')->once()->with(Mockery::type(ContactRequestConfirmation::class));
+        Mail::shouldReceive('to')->once()->with('intake@local.test')->andThrow(new RuntimeException('Transport unavailable'));
+        Mail::shouldReceive('to')->once()->with('avery@example.com')->andReturn($confirmation);
+        $this->post(route('contact-requests.store'), $this->validData())->assertRedirect(route('contact.thank-you'));
+        $this->assertDatabaseHas('contact_requests', ['email' => 'avery@example.com', 'status' => ContactRequest::STATUS_NEW]);
+    }
+
+    public function test_confirmation_mail_failure_does_not_discard_message_or_prevent_internal_notification(): void
+    {
+        $notification = Mockery::mock();
+        $notification->shouldReceive('send')->once()->with(Mockery::type(NewContactRequestNotification::class));
+        Mail::shouldReceive('to')->once()->with('intake@local.test')->andReturn($notification);
+        Mail::shouldReceive('to')->once()->with('avery@example.com')->andThrow(new RuntimeException('Transport unavailable'));
+
         $this->post(route('contact-requests.store'), $this->validData())->assertRedirect(route('contact.thank-you'));
         $this->assertDatabaseHas('contact_requests', ['email' => 'avery@example.com', 'status' => ContactRequest::STATUS_NEW]);
     }

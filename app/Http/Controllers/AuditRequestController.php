@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAuditRequest;
+use App\Mail\AuditRequestConfirmation;
 use App\Mail\NewAuditRequestNotification;
 use App\Models\AuditRequest;
 use App\Services\TurnstileVerifier;
@@ -31,6 +32,16 @@ class AuditRequestController extends Controller
             Mail::to(config('services.local_works.intake_email'))->send(new NewAuditRequestNotification($auditRequest));
         } catch (Throwable $exception) {
             Log::error('Audit request notification could not be sent.', [
+                'audit_request_id' => $auditRequest->getKey(),
+                'route' => $request->route()->getName(),
+                'exception_class' => $exception::class,
+            ]);
+        }
+
+        try {
+            Mail::to($auditRequest->email)->send(new AuditRequestConfirmation($auditRequest));
+        } catch (Throwable $exception) {
+            Log::error('Audit request confirmation could not be sent.', [
                 'audit_request_id' => $auditRequest->getKey(),
                 'route' => $request->route()->getName(),
                 'exception_class' => $exception::class,

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreContactRequest;
+use App\Mail\ContactRequestConfirmation;
 use App\Mail\NewContactRequestNotification;
 use App\Models\ContactRequest;
 use App\Services\TurnstileVerifier;
@@ -31,6 +32,16 @@ class ContactRequestController extends Controller
             Mail::to(config('services.local_works.intake_email'))->send(new NewContactRequestNotification($contactRequest));
         } catch (Throwable $exception) {
             Log::error('Contact request notification could not be sent.', [
+                'contact_request_id' => $contactRequest->getKey(),
+                'route' => $request->route()->getName(),
+                'exception_class' => $exception::class,
+            ]);
+        }
+
+        try {
+            Mail::to($contactRequest->email)->send(new ContactRequestConfirmation($contactRequest));
+        } catch (Throwable $exception) {
+            Log::error('Contact request confirmation could not be sent.', [
                 'contact_request_id' => $contactRequest->getKey(),
                 'route' => $request->route()->getName(),
                 'exception_class' => $exception::class,
