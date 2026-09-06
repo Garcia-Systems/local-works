@@ -16,6 +16,8 @@ class AuditRequestFlowTest extends TestCase
 {
     use RefreshDatabase;
 
+    private bool $turnstileSucceeds = true;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -24,7 +26,11 @@ class AuditRequestFlowTest extends TestCase
             'services.turnstile.site_key' => 'test-site-key',
             'services.turnstile.secret_key' => 'test-secret',
         ]);
-        Http::fake(['challenges.cloudflare.com/*' => Http::response(['success' => true])]);
+        Http::fake([
+            'https://challenges.cloudflare.com/turnstile/v0/siteverify' => fn () => Http::response([
+                'success' => $this->turnstileSucceeds,
+            ]),
+        ]);
         Mail::fake();
     }
 
@@ -137,7 +143,7 @@ class AuditRequestFlowTest extends TestCase
 
     public function test_failed_turnstile_verification_prevents_storage_and_mail(): void
     {
-        Http::fake(['challenges.cloudflare.com/*' => Http::response(['success' => false])]);
+        $this->turnstileSucceeds = false;
 
         $this->from(route('digital-friction-audit'))->post(route('audit-requests.store'), $this->validData())
             ->assertRedirect(route('digital-friction-audit').'#audit-intake')

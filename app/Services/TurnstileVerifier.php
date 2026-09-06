@@ -13,7 +13,7 @@ class TurnstileVerifier
     {
         $secret = config('services.turnstile.secret_key');
 
-        if (! is_string($secret) || $secret === '' || $token === '') {
+        if (! is_string($secret) || trim($secret) === '' || trim($token) === '') {
             return false;
         }
 
@@ -32,7 +32,13 @@ class TurnstileVerifier
                 ->timeout(5)
                 ->post(self::VERIFY_URL, $payload);
 
-            return $response->successful() && $response->json('success') === true;
+            if (! $response->successful()) {
+                return false;
+            }
+
+            $result = $response->json();
+
+            return is_array($result) && ($result['success'] ?? null) === true;
         } catch (Throwable) {
             return false;
         }

@@ -16,6 +16,8 @@ class ContactRequestFlowTest extends TestCase
 {
     use RefreshDatabase;
 
+    private bool $turnstileSucceeds = true;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -24,7 +26,11 @@ class ContactRequestFlowTest extends TestCase
             'services.turnstile.site_key' => 'test-site-key',
             'services.turnstile.secret_key' => 'test-secret',
         ]);
-        Http::fake(['challenges.cloudflare.com/*' => Http::response(['success' => true])]);
+        Http::fake([
+            'https://challenges.cloudflare.com/turnstile/v0/siteverify' => fn () => Http::response([
+                'success' => $this->turnstileSucceeds,
+            ]),
+        ]);
         Mail::fake();
     }
 
@@ -72,7 +78,7 @@ class ContactRequestFlowTest extends TestCase
 
     public function test_failed_turnstile_verification_prevents_storage_and_mail(): void
     {
-        Http::fake(['challenges.cloudflare.com/*' => Http::response(['success' => false])]);
+        $this->turnstileSucceeds = false;
 
         $this->from(route('contact'))->post(route('contact-requests.store'), $this->validData())
             ->assertRedirect(route('contact').'#general-contact')
