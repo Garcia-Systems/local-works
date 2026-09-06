@@ -124,6 +124,17 @@ class PublicSiteTest extends TestCase
             ->assertSee('aria-current="page"', false);
     }
 
+    public function test_footer_links_garcia_systems_in_the_copyright_notice(): void
+    {
+        $response = $this->get('/');
+
+        $response
+            ->assertOk()
+            ->assertSee('&copy; '.date('Y').' <a class="hover:text-white hover:underline focus-visible:text-white focus-visible:underline" href="https://garciasystems.org">Garcia Systems</a>. All rights reserved.', false);
+
+        $this->assertSame(1, substr_count($response->getContent(), 'href="https://garciasystems.org"'));
+    }
+
     public function test_problems_page_presents_recognizable_friction_and_balanced_outcomes(): void
     {
         $response = $this->get('/problems');

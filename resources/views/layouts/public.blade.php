@@ -104,7 +104,7 @@
                 <a class="mt-4 inline-block text-sm text-stone-200 hover:text-white hover:underline" href="{{ route('privacy') }}">Privacy</a>
             </div>
         </div>
-        <div class="border-t border-white/10"><div class="site-container py-6 text-sm text-stone-400">&copy; {{ date('Y') }} Garcia Systems. All rights reserved.</div></div>
+        <div class="border-t border-white/10"><div class="site-container py-6 text-sm text-stone-400">&copy; {{ date('Y') }} <a class="hover:text-white hover:underline focus-visible:text-white focus-visible:underline" href="https://garciasystems.org">Garcia Systems</a>. All rights reserved.</div></div>
     </footer>
     @stack('scripts')
 </body>
