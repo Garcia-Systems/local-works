@@ -143,6 +143,7 @@
                                 <div class="field sm:col-span-2"><label for="desired_improvement">What would you like to improve? <span class="field-status">Optional</span></label><textarea id="desired_improvement" name="desired_improvement" rows="4" maxlength="5000" aria-describedby="improvement-help">{{ old('desired_improvement') }}</textarea><p id="improvement-help">Focus on the experience or burden, not a particular technology.</p></div>
                                 <div class="field sm:col-span-2"><label for="additional_context">Anything else we should know? <span class="field-status">Optional</span></label><textarea id="additional_context" name="additional_context" rows="4" maxlength="5000" aria-describedby="context-help">{{ old('additional_context') }}</textarea><p id="context-help">Add relevant context only. Detailed system access is not needed.</p></div>
                             </div></fieldset>
+                            <x-turnstile />
                             <p id="privacy-note" class="privacy-note">Information will be used only to evaluate and respond to your request. Do not include passwords or highly sensitive information. Detailed system access is not required at this stage. Read the <a href="{{ route('privacy') }}">privacy notice</a>.</p>
                             <button class="button button-primary w-full sm:w-auto" type="submit" data-analytics-submit="audit-request">Request a Digital Friction Audit</button>
                         </form>

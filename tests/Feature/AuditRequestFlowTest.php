@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Mail\NewAuditRequestNotification;
 use App\Models\AuditRequest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -19,6 +20,11 @@ class AuditRequestFlowTest extends TestCase
     {
         parent::setUp();
         config(['services.local_works.intake_email' => 'intake@local.test']);
+        config([
+            'services.turnstile.site_key' => 'test-site-key',
+            'services.turnstile.secret_key' => 'test-secret',
+        ]);
+        Http::fake(['challenges.cloudflare.com/*' => Http::response(['success' => true])]);
         Mail::fake();
     }
 
@@ -37,11 +43,24 @@ class AuditRequestFlowTest extends TestCase
         ]);
         Mail::assertSent(NewAuditRequestNotification::class, fn ($mail): bool => $mail->hasTo('intake@local.test') && $mail->auditRequest->business_name === 'Example Workshop'
         );
+        Http::assertSent(fn ($request): bool => $request->url() === 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
+            && $request['secret'] === 'test-secret'
+            && $request['response'] === 'valid-test-token'
+            && filled($request['remoteip']));
 
         $this->followRedirects($response)
             ->assertOk()
             ->assertSee('Your request has been received.')
             ->assertSee('data-submission-event="audit_form_submit"', false);
+    }
+
+    public function test_form_renders_the_turnstile_widget_and_script(): void
+    {
+        $this->get(route('digital-friction-audit'))
+            ->assertOk()
+            ->assertSee('class="cf-turnstile"', false)
+            ->assertSee('data-sitekey="test-site-key"', false)
+            ->assertSee('https://challenges.cloudflare.com/turnstile/v0/api.js', false);
     }
 
     #[DataProvider('requiredFields')]
@@ -113,6 +132,32 @@ class AuditRequestFlowTest extends TestCase
         $response->assertRedirect(route('digital-friction-audit').'#audit-intake')->assertSessionHasErrors('company_fax');
         $this->assertDatabaseCount('audit_requests', 0);
         Mail::assertNothingSent();
+        Http::assertNothingSent();
+    }
+
+    public function test_failed_turnstile_verification_prevents_storage_and_mail(): void
+    {
+        Http::fake(['challenges.cloudflare.com/*' => Http::response(['success' => false])]);
+
+        $this->from(route('digital-friction-audit'))->post(route('audit-requests.store'), $this->validData())
+            ->assertRedirect(route('digital-friction-audit').'#audit-intake')
+            ->assertSessionHasErrors(['cf-turnstile-response' => "We couldn't verify your submission. Please try again."]);
+
+        $this->assertDatabaseCount('audit_requests', 0);
+        Mail::assertNothingSent();
+    }
+
+    public function test_missing_turnstile_response_is_rejected_without_verification_or_side_effects(): void
+    {
+        $data = $this->validData();
+        unset($data['cf-turnstile-response']);
+
+        $this->from(route('digital-friction-audit'))->post(route('audit-requests.store'), $data)
+            ->assertSessionHasErrors('cf-turnstile-response');
+
+        $this->assertDatabaseCount('audit_requests', 0);
+        Mail::assertNothingSent();
+        Http::assertNothingSent();
     }
 
     public function test_submission_route_is_rate_limited_but_validation_mistakes_allow_retries(): void
@@ -173,6 +218,7 @@ class AuditRequestFlowTest extends TestCase
             'business_website' => 'example.com',
             'friction_description' => 'Customers must call to make routine changes.',
             'current_process' => 'A staff member takes the call and updates the system.',
+            'cf-turnstile-response' => 'valid-test-token',
         ];
     }
 }

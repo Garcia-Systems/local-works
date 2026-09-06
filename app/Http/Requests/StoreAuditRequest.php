@@ -37,6 +37,14 @@ class StoreAuditRequest extends FormRequest
             'desired_improvement' => ['nullable', 'string', 'max:5000'],
             'additional_context' => ['nullable', 'string', 'max:5000'],
             'company_fax' => ['nullable', 'prohibited'],
+            'cf-turnstile-response' => ['required', 'string'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'cf-turnstile-response.required' => 'Please complete the verification before submitting.',
         ];
     }
 

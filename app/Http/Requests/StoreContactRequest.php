@@ -27,6 +27,14 @@ class StoreContactRequest extends FormRequest
             'business_name' => ['nullable', 'string', 'max:255'],
             'message' => ['required', 'string', 'max:10000'],
             'company_fax' => ['nullable', 'prohibited'],
+            'cf-turnstile-response' => ['required', 'string'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'cf-turnstile-response.required' => 'Please complete the verification before submitting.',
         ];
     }
 
