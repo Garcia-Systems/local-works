@@ -106,5 +106,6 @@
         </div>
         <div class="border-t border-white/10"><div class="site-container py-6 text-sm text-stone-400">&copy; {{ date('Y') }} Garcia Systems. All rights reserved.</div></div>
     </footer>
+    @stack('scripts')
 </body>
 </html>

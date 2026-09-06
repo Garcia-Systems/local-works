@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Mail\NewContactRequestNotification;
 use App\Models\ContactRequest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -19,6 +20,11 @@ class ContactRequestFlowTest extends TestCase
     {
         parent::setUp();
         config(['services.local_works.intake_email' => 'intake@local.test']);
+        config([
+            'services.turnstile.site_key' => 'test-site-key',
+            'services.turnstile.secret_key' => 'test-secret',
+        ]);
+        Http::fake(['challenges.cloudflare.com/*' => Http::response(['success' => true])]);
         Mail::fake();
     }
 
@@ -36,9 +42,22 @@ class ContactRequestFlowTest extends TestCase
         ]);
         Mail::assertSent(NewContactRequestNotification::class, fn ($mail): bool => $mail->hasTo('intake@local.test') && $mail->contactRequest->email === 'avery@example.com'
         );
+        Http::assertSent(fn ($request): bool => $request->url() === 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
+            && $request['secret'] === 'test-secret'
+            && $request['response'] === 'valid-test-token'
+            && filled($request['remoteip']));
         $this->followRedirects($response)->assertOk()
             ->assertSee('Your message has been received.')
             ->assertSee('data-submission-event="contact_form_submit"', false);
+    }
+
+    public function test_form_renders_the_turnstile_widget_and_script(): void
+    {
+        $this->get(route('contact'))
+            ->assertOk()
+            ->assertSee('class="cf-turnstile"', false)
+            ->assertSee('data-sitekey="test-site-key"', false)
+            ->assertSee('https://challenges.cloudflare.com/turnstile/v0/api.js', false);
     }
 
     #[DataProvider('requiredFields')]
@@ -48,6 +67,32 @@ class ContactRequestFlowTest extends TestCase
             ->assertRedirect(route('contact').'#general-contact')->assertSessionHasErrors($field);
         $this->assertDatabaseCount('contact_requests', 0);
         Mail::assertNothingSent();
+        Http::assertNothingSent();
+    }
+
+    public function test_failed_turnstile_verification_prevents_storage_and_mail(): void
+    {
+        Http::fake(['challenges.cloudflare.com/*' => Http::response(['success' => false])]);
+
+        $this->from(route('contact'))->post(route('contact-requests.store'), $this->validData())
+            ->assertRedirect(route('contact').'#general-contact')
+            ->assertSessionHasErrors(['cf-turnstile-response' => "We couldn't verify your submission. Please try again."]);
+
+        $this->assertDatabaseCount('contact_requests', 0);
+        Mail::assertNothingSent();
+    }
+
+    public function test_missing_turnstile_response_is_rejected_without_verification_or_side_effects(): void
+    {
+        $data = $this->validData();
+        unset($data['cf-turnstile-response']);
+
+        $this->from(route('contact'))->post(route('contact-requests.store'), $data)
+            ->assertSessionHasErrors('cf-turnstile-response');
+
+        $this->assertDatabaseCount('contact_requests', 0);
+        Mail::assertNothingSent();
+        Http::assertNothingSent();
     }
 
     public static function requiredFields(): array
@@ -95,6 +140,7 @@ class ContactRequestFlowTest extends TestCase
             ->assertRedirect(route('contact').'#general-contact')->assertSessionHasErrors('company_fax');
         $this->assertDatabaseCount('contact_requests', 0);
         Mail::assertNothingSent();
+        Http::assertNothingSent();
 
         for ($attempt = 0; $attempt < 4; $attempt++) {
             $this->post(route('contact-requests.store'), [])->assertSessionHasErrors();
@@ -134,6 +180,6 @@ class ContactRequestFlowTest extends TestCase
 
     private function validData(): array
     {
-        return ['name' => 'Avery Owner', 'email' => 'avery@example.com', 'phone' => '555-0100', 'business_name' => 'Example Workshop', 'message' => 'I have a general question about Local Works.'];
+        return ['name' => 'Avery Owner', 'email' => 'avery@example.com', 'phone' => '555-0100', 'business_name' => 'Example Workshop', 'message' => 'I have a general question about Local Works.', 'cf-turnstile-response' => 'valid-test-token'];
     }
 }
